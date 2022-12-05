@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "261515393532",
+    "project_id": "edgescanner-ae89a",
+    "storage_bucket": "edgescanner-ae89a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:261515393532:android:80bd2d2f2ed4f0d6e4da79",
+        "android_client_info": {
+          "package_name": "apc.mobprog.myqrcodeandbarcodescanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "261515393532-1fvkql51vk4tenvucv060bsd4nlpngfa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "apc.mobprog.myqrcodeandbarcodescanner",
+            "certificate_hash": "9784892195a5f6eb5a9a7333411b776156026af1"
+          }
+        },
+        {
+          "client_id": "261515393532-b2k4t537vonpi5ouhqj0rcfbs7i4q88m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7n0j-zOqMlUpa-LdCh9POSMw8B-NFuAk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "261515393532-b2k4t537vonpi5ouhqj0rcfbs7i4q88m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
