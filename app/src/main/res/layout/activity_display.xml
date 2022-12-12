@@ -10,54 +10,58 @@
         android:id="@+id/promoInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:text="Promodiser Information:"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.097"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sampleListView" />
 
     <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="644dp"
-        android:text="Scan Again"
+        android:id="@+id/button4"
+        android:layout_width="152dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="604dp"
+        android:text="Send Data"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.077"
+        app:layout_constraintHorizontal_bias="0.887"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="644dp"
-        android:text="Send Data"
+        android:id="@+id/button2"
+        android:layout_width="150dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="604dp"
+        android:text="Scan Again"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.87"
+        app:layout_constraintHorizontal_bias="0.095"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
         android:id="@+id/sampleListView"
-        android:layout_width="410dp"
-        android:layout_height="272dp"
+        android:layout_width="382dp"
+        android:layout_height="220dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.523"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"></ListView>
+        app:layout_constraintVertical_bias="0.032"></ListView>
 
     <ScrollView
         android:id="@+id/scrollView3"
-        android:layout_width="408dp"
-        android:layout_height="179dp"
+        android:layout_width="363dp"
+        android:layout_height="299dp"
+        android:layout_marginTop="59dp"
         app:layout_constraintBottom_toTopOf="@+id/button4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/promoInfo"
+        app:layout_constraintTop_toBottomOf="@+id/sampleListView"
         app:layout_constraintVertical_bias="0.0"
         tools:ignore="SpeakableTextPresentCheck">
 
@@ -69,8 +73,8 @@
 
             <EditText
                 android:id="@+id/fullName"
-                android:layout_width="398dp"
-                android:layout_height="48dp"
+                android:layout_width="346dp"
+                android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Full Name"
                 android:inputType="textPersonName"
@@ -85,8 +89,8 @@
 
             <EditText
                 android:id="@+id/mobileNumber"
-                android:layout_width="397dp"
-                android:layout_height="48dp"
+                android:layout_width="346dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:ems="10"
                 android:hint="Mobile Number"
@@ -148,8 +152,8 @@
 
             <EditText
                 android:id="@+id/size"
-                android:layout_width="288dp"
-                android:layout_height="48dp"
+                android:layout_width="156dp"
+                android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Size"
                 android:inputType="number|text"
@@ -179,8 +183,8 @@
 
             <EditText
                 android:id="@+id/unitprice"
-                android:layout_width="283dp"
-                android:layout_height="48dp"
+                android:layout_width="156dp"
+                android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Unit Price"
                 android:inputType="number|text"
@@ -194,8 +198,8 @@
 
             <EditText
                 android:id="@+id/runningtotal"
-                android:layout_width="285dp"
-                android:layout_height="50dp"
+                android:layout_width="156dp"
+                android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Running Total"
                 android:inputType="number"
@@ -207,39 +211,27 @@
                 app:layout_constraintTop_toBottomOf="@+id/size"
                 app:layout_constraintVertical_bias="0.062" />
 
+            <EditText
+                android:id="@+id/totalquantity"
+                android:layout_width="156dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Total Quantity"
+                android:inputType="number"
+                android:minHeight="48dp" />
+
+            <EditText
+                android:id="@+id/remarks"
+                android:layout_width="155dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:ems="10"
+                android:hint="Remarks"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
+                tools:ignore="SpeakableTextPresentCheck" />
+
         </LinearLayout>
     </ScrollView>
-
-    <EditText
-        android:id="@+id/totalquantity"
-        android:layout_width="386dp"
-        android:layout_height="60dp"
-        android:ems="10"
-        android:hint="Total Quantity"
-        android:inputType="number"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.48"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView3"
-        app:layout_constraintVertical_bias="0.059" />
-
-    <EditText
-        android:id="@+id/remarks"
-        android:layout_width="376dp"
-        android:layout_height="51dp"
-        android:layout_marginTop="12dp"
-        android:ems="10"
-        android:hint="Remarks"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/button4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.342"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/totalquantity"
-        app:layout_constraintVertical_bias="0.0"
-        tools:ignore="SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
