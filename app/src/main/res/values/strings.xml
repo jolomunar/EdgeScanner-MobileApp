@@ -49,4 +49,13 @@
         <item>F-22</item>
         <item>M-20</item>
     </string-array>
+
+    <string-array name="locationCode">
+        <item>Select Location Code</item>
+        <item>15-0006</item>
+        <item>15-0013</item>
+        <item>15-0014</item>
+        <item>15-0205</item>
+        <item>15-0440</item>
+    </string-array>
 </resources>
