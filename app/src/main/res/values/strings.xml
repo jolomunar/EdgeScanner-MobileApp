@@ -50,6 +50,7 @@
         <item>M-20</item>
     </string-array>
 
+
     <string-array name="locationCode">
         <item>Select Location Code</item>
         <item>15-0006 - SM Megamall</item>
@@ -252,7 +253,211 @@
         <item>15-0142 - Royal Sporting House-Galleria</item>
         <item>15-0129 - Royal Sporting House - Lipa</item>
         <item>15-0139 - Royal Sporting House - Cebu</item>
-
-
     </string-array>
+
+    //outlet
+    <string-array name="outlet">
+        <item>Select Location Code</item>
+        <item>SM Megamall</item>
+        <item>SM Megamall</item>
+        <item>SM Southmall</item>
+        <item>SM Sta. Mesa</item>
+        <item>SM Cubao</item>
+        <item>SM Harrison</item>
+        <item>SM Makati</item>
+        <item>SM Makati</item>
+        <item>SM North Edsa</item>
+        <item>SM North Edsa</item>
+        <item>SM Cebu</item>
+        <item>SM Quiapo</item>
+        <item>SM Bacoor</item>
+        <item>SM Fairview</item>
+        <item>SM Iloilo</item>
+        <item>SM City Manila</item>
+        <item>SM Davao</item>
+        <item>SM Cagayan De Oro</item>
+        <item>SM Bicutan</item>
+        <item>SM Lucena</item>
+        <item>SM Baguio</item>
+        <item>SM Marilao</item>
+        <item>SM Batangas</item>
+        <item>SM San Lazaro</item>
+        <item>SM Sucat</item>
+        <item>SM Mall of Asia</item>
+        <item>SM Sta. Rosa</item>
+        <item>SM Clark</item>
+        <item>SM Lipa</item>
+        <item>SM Bacolod</item>
+        <item>SM Taytay</item>
+        <item>SM Marikina</item>
+        <item>SM BALIWAG</item>
+        <item>SM NAGA</item>
+        <item>SM ROSALES</item>
+        <item>SM Tarlac</item>
+        <item>SM Calamba</item>
+        <item>SM San Pablo</item>
+        <item>SM Novaliches</item>
+        <item>SM Masinag</item>
+        <item>SM San Fernando</item>
+        <item>SM Olongapo</item>
+        <item>SM Consolacion</item>
+        <item>SM Gensan</item>
+        <item>SM Lanang</item>
+        <item>SM Aura Premier</item>
+        <item>SM BF Parañaque</item>
+        <item>SM Cauayan</item>
+        <item>SM San Mateo</item>
+        <item>SM Cabanatuan</item>
+        <item>SM Seaside Cebu</item>
+        <item>SM San Jose Del Monte</item>
+        <item>SM Trece Martires</item>
+        <item>SM Molino</item>
+        <item>SM Store East Ortigas</item>
+        <item>SM Puerto Princesa</item>
+        <item>SM Cubao E-Store</item>
+        <item>SM Urdaneta</item>
+        <item>SM City Telabastagan</item>
+        <item>SM Valenzuela</item>
+        <item>SM Makati - Outdoors</item>
+        <item>SM City Olongapo Central</item>
+        <item>SM Estancia</item>
+        <item>SM Butuan</item>
+        <item>SM Mindpro Zamboanga</item>
+        <item>SM Grand Central</item>
+        <item>Robinsons Galleria</item>
+        <item>Robinsons Ermita</item>
+        <item>Robinsons Metropolis</item>
+        <item>Robinsons Imus</item>
+        <item>Robinsons Cebu</item>
+        <item>Robinsons Metro East</item>
+        <item>Robinsons Pampanga</item>
+        <item>Robinsons Bacolod</item>
+        <item>Robinsons Dasmarinas</item>
+        <item>Robinsons Lipa</item>
+        <item>Robinsons Ermita - SE</item>
+        <item>Robinsons Bulacan</item>
+        <item>Robinsons Angeles - SE</item>
+        <item>Robinsons Place - Bacolod 2</item>
+        <item>Robinsons Dagupan</item>
+        <item>Robinsons Cagayan</item>
+        <item>Robinsons Cabanatuan</item>
+        <item>Robinsons Dumaguete</item>
+        <item>Robinsons Laoag</item>
+        <item>Robinsons Calasiao</item>
+        <item>Robinsons Puerto Princesa</item>
+        <item>Robinsons Magnolia</item>
+        <item>Robinsons Butuan</item>
+        <item>Robinsons Roxas</item>
+        <item>Robinsons Malolos</item>
+        <item>Robinsons Santiago</item>
+        <item>Robinsons Galleria Cebu</item>
+        <item>Robinsons Tagum</item>
+        <item>Robinsons General Trias</item>
+        <item>Robinsons Jaro Iloilo</item>
+        <item>Robinsons Southpark</item>
+        <item>Robinsons Iligan</item>
+        <item>Robinsons Naga</item>
+        <item>Robinsons Cloverleaf</item>
+        <item>Robinsons Cotabato</item>
+        <item>Robinsons North Tacloban</item>
+        <item>Robinsons Ormoc</item>
+        <item>Robinsons Tuguegarao</item>
+        <item>Robinsons Valencia</item>
+        <item>Olympic Village Isetann</item>
+        <item>Olympic Village Sta Lucia</item>
+        <item>Olympic Village Star EDSA</item>
+        <item>Olympic Village Megamall</item>
+        <item>Olympic Village North EDSA</item>
+        <item>Olympic Village Imus</item>
+        <item>Olympic Village Cebu</item>
+        <item>Olympic Village Pampanga</item>
+        <item>Olympic Village Dasmarinas</item>
+        <item>Olympic Village Sta Rosa</item>
+        <item>Olympic Village Market Market</item>
+        <item>Olympic Village Southmall</item>
+        <item>Olympic Village Gateway</item>
+        <item>Olympic Village Pioneer</item>
+        <item>Olympic Village Trinoma</item>
+        <item>Olympic Village Lipa</item>
+        <item>Olympic Village Glorietta 2</item>
+        <item>Olympic Village Fisher Mall</item>
+        <item>Olympic Village Farmers</item>
+        <item>Olympic Village Antipolo</item>
+        <item>Olympic Village RDS Las Piñas</item>
+        <item>Olympic Village Galleria South</item>
+        <item>Planet Sports -Mamplasan</item>
+        <item>Planet Sports -Glorietta</item>
+        <item>Planet Sports -Pasig</item>
+        <item>Planet Sports -Greenhills</item>
+        <item>Planet Sports -Alabang</item>
+        <item>Planet Sports -Trinoma</item>
+        <item>Planet Sports - Cebu</item>
+        <item>Planet Sports -Subic</item>
+        <item>Planet Sports -Cebu</item>
+        <item>Planet Sports -SW Munoz</item>
+        <item>Planet Sports -SW Libis</item>
+        <item>Planet Sports -SW Market</item>
+        <item>Tobys -Rustans Shangrila</item>
+        <item>Tobys -North Edsa</item>
+        <item>Tobys -Megamall</item>
+        <item>Tobys -The Podium</item>
+        <item>Tobys Arena -Glorietta</item>
+        <item>Tobys -Manila</item>
+        <item>Tobys -Robinsons Galleria</item>
+        <item>Tobys -Bacoor</item>
+        <item>Tobys -Fairview</item>
+        <item>Tobys -Cebu</item>
+        <item>Tobys -Pampanga</item>
+        <item>Tobys-Valenzuela</item>
+        <item>Tobys -Sta. Rosa</item>
+        <item>Tobys -Mall Of Asia</item>
+        <item>Tobys -The Block</item>
+        <item>Tobys -Trinoma</item>
+        <item>Tobys -Taytay</item>
+        <item>Tobys -SM Cebu - NORTHWING</item>
+        <item>Tobys -Marikina</item>
+        <item>Tobys -Rosario</item>
+        <item>Tobys ATC</item>
+        <item>Tobys -Cagayan</item>
+        <item>Tobys -Festival</item>
+        <item>Tobys Abreeza -Davao</item>
+        <item>Gaisano - Metro - Lucena</item>
+        <item>Gaisano - Tacloban</item>
+        <item>Gaisano - General - Lobby Sale</item>
+        <item>Gaisano - Roxas</item>
+        <item>Gaisano - Gatuslao Bacolod</item>
+        <item>Gaisano - Mactan</item>
+        <item>Gaisano - South</item>
+        <item>Gaisano - Iloilo CON</item>
+        <item>Gaisano Grand Mactan</item>
+        <item>Gaisano Grand - Tagum</item>
+        <item>Gaisano Grand Mactan</item>
+        <item>RSH - Megatrade Hall</item>
+        <item>RSH - Starmill RDS Pampanga</item>
+        <item>RSH - UP Town Center</item>
+        <item>RSH - Valenzuela</item>
+        <item>RSH - The 30th Ayala Mall</item>
+        <item>RSH  - Recto</item>
+        <item>Sports Central - Baguio</item>
+        <item>Sports Central - Sta Mesa</item>
+        <item>Sports Central - Batangas</item>
+        <item>Sports Central - Dasmarinas</item>
+        <item>Sports Central - Fairview</item>
+        <item>Sports Central - Pampanga</item>
+        <item>Sports Central - Mall Of Asia</item>
+        <item>Sports Central - North Edsa</item>
+        <item>Sports Central-SM Seaside Cebu</item>
+        <item>Sports Central - Cauayan</item>
+        <item>Sports Central - SM Lanang</item>
+        <item>Sports Central-Puerto Princesa</item>
+        <item>Sports Central-SM Makati</item>
+        <item>Sports Central-SM Iloilo</item>
+        <item>Sports Central - SM Southmall</item>
+        <item>Royal Sporting House - Ermita</item>
+        <item>Royal Sporting House -Festival</item>
+        <item>Royal Sporting House-Galleria</item>
+        <item>Royal Sporting House - Lipa</item>
+        <item>Royal Sporting House - Cebu</item>
+    </string-array>
+    
 </resources>
