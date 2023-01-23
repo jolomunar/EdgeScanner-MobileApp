@@ -2,14 +2,19 @@ package apc.mobprog.myqrcodeandbarcodescanner;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.Button;
 import android.widget.TextView;
@@ -47,15 +52,16 @@ public class DisplayActivity extends AppCompatActivity {
     Button scanAgain;
     Button sendData;
     ListView listView;
-    EditText fullName, mobileNumber, outlet, stockCode, color, size,
-    unitPrice, runningTotal, tQuantity, remarks, brand;
+    EditText stockCode, unitPrice, runningTotal, tQuantity;
+    Spinner brand, size, color, remarks;
     ArrayAdapter<String> arr;
-    String esEndpoint = "https://edgescanner.herokuapp.com/api/ess-api/create";
+     String esEndpoint = "https://edgescanner.herokuapp.com/api/ess-api/create";
 //   String esEndpoint = "http://localhost:8000/api/ess-api/create";
 //   String esEndpoint = "https://eok6418nj8g0skh.m.pipedream.net";
 //   String esEndpoint = "https://e7bf9b6b00c727d40a25426a9ec5c20e.m.pipedream.net";
 //   String esEndpoint = "https://eotwyaq96coc31b.m.pipedream.net";
-
+//   String esEndpoint = "https://edgescanner.myapc.edu.ph/api/ess-api/create";
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,16 +87,39 @@ public class DisplayActivity extends AppCompatActivity {
 
 //        Log.e(TAG, "55555  - RESULT : " + GlobalBarcode.arrayList.toString());
         stockCode = findViewById(R.id.stockcode);
-        color = findViewById(R.id.color);
-        size = findViewById(R.id.size);
         unitPrice = findViewById(R.id.unitprice);
         runningTotal = findViewById(R.id.runningtotal);
         remarks = findViewById(R.id.remarks);
         tQuantity = findViewById(R.id.totalquantity);
         brand = findViewById(R.id.brand);
-        outlet = findViewById(R.id.outlet);
-        fullName = findViewById(R.id.fullName);
-        mobileNumber = findViewById(R.id.mobileNumber);
+
+        //Color Drop Down
+        color = findViewById(R.id.color);
+        ArrayAdapter<String> shoeColor = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
+                getResources().getStringArray(R.array.color));
+        shoeColor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        color.setAdapter(shoeColor);
+
+        //Size Drop Down
+        size = findViewById(R.id.size);
+        ArrayAdapter<String> shoeSize = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
+                getResources().getStringArray(R.array.size));
+        shoeSize.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        size.setAdapter(shoeSize);
+
+        //Brand Drop Down
+        brand = findViewById(R.id.brand);
+        ArrayAdapter<String> shoeBrand = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
+                getResources().getStringArray(R.array.brand));
+        shoeBrand.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        brand.setAdapter(shoeBrand);
+
+        //Remarks Drop Down
+        remarks = findViewById(R.id.remarks);
+        ArrayAdapter<String> remarksAgeGender = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
+                getResources().getStringArray(R.array.remarks));
+        remarksAgeGender.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        remarks.setAdapter(remarksAgeGender);
     }
 
 
@@ -109,27 +138,18 @@ public class DisplayActivity extends AppCompatActivity {
         sendData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GlobalBarcode.fName = fullName.getText().toString();
-                GlobalBarcode.outlet = outlet.getText().toString();
-                GlobalBarcode.mobNum = mobileNumber.getText().toString();
                 GlobalBarcode.stCode = stockCode.getText().toString();
-                GlobalBarcode.size = size.getText().toString();
-                GlobalBarcode.color = color.getText().toString();
+                GlobalBarcode.size = size.getSelectedItem().toString();
+                GlobalBarcode.color = color.getSelectedItem().toString();
                 GlobalBarcode.uPrice = unitPrice.getText().toString();
                 GlobalBarcode.rTotal = runningTotal.getText().toString();
                 GlobalBarcode.totalQuantity = tQuantity.getText().toString();
-                GlobalBarcode.remarks = remarks.getText().toString();
-                GlobalBarcode.brand = brand.getText().toString();
+                GlobalBarcode.remarks = remarks.getSelectedItem().toString();
+                GlobalBarcode.brand = brand.getSelectedItem().toString();
 
 
                 if (TextUtils.isEmpty(GlobalBarcode.stCode)) {
                     stockCode.setError("This Field is Required");
-                    return;
-                } else if (TextUtils.isEmpty(GlobalBarcode.color)) {
-                    color.setError("This Field is Required");
-                    return;
-                } else if (TextUtils.isEmpty(GlobalBarcode.size)) {
-                    size.setError("This Field is Required");
                     return;
                 } else if (TextUtils.isEmpty(GlobalBarcode.uPrice)) {
                     unitPrice.setError("This Field is Required");
@@ -137,23 +157,8 @@ public class DisplayActivity extends AppCompatActivity {
                 } else if (TextUtils.isEmpty(GlobalBarcode.rTotal)) {
                     runningTotal.setError("This Field is Required");
                     return;
-                } else if (TextUtils.isEmpty(GlobalBarcode.remarks)) {
-                    remarks.setError("This Field is Required");
-                    return;
                 } else if (TextUtils.isEmpty(GlobalBarcode.totalQuantity)) {
                     tQuantity.setError("This Field is Required");
-                    return;
-                } else if (TextUtils.isEmpty(GlobalBarcode.brand)) {
-                    brand.setError("This Field is Required");
-                    return;
-                } else if (TextUtils.isEmpty(GlobalBarcode.outlet)) {
-                    outlet.setError("This Field is Required");
-                    return;
-                } else if (TextUtils.isEmpty(GlobalBarcode.fName)) {
-                    fullName.setError("This Field is Required");
-                    return;
-                } else if (TextUtils.isEmpty(GlobalBarcode.mobNum)) {
-                    mobileNumber.setError("This Field is Required");
                     return;
                 } else {
                     MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
@@ -306,9 +311,6 @@ public class DisplayActivity extends AppCompatActivity {
             StringBuilder result = new StringBuilder();
             for (Map.Entry<String, ArrayList<String>> entry : params.entrySet()) {
                 result.append("{");
-                result.append("\"full_name\":\"" + GlobalBarcode.fName + "\",");
-                result.append("\"outlet\":\"" + GlobalBarcode.outlet + "\",");
-                result.append("\"mobile_number\":\"" + GlobalBarcode.mobNum + "\",");
                 result.append("\"stock_code\":\"" + GlobalBarcode.stCode + "\",");
                 result.append("\"size\":\"" + GlobalBarcode.size + "\",");
                 result.append("\"color\":\"" + GlobalBarcode.color + "\",");

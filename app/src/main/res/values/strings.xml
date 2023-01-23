@@ -11,4 +11,42 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+
+    <string-array name= "brand">
+        <item>Select Brand</item>
+        <item>Skechers</item>
+        <item>Merrell</item>
+        <item>Mario Dboro</item>
+        <item>Florsheim</item>
+    </string-array>
+
+    <string-array name= "size">
+        <item>Select Size</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+    </string-array>
+
+    <string-array name= "color">
+        <item>Select Color</item>
+        <item>BLK</item>
+        <item>BLU</item>
+        <item>WHT</item>
+        <item>RED</item>
+    </string-array>
+
+    <string-array name= "remarks">
+        <item>Select Remarks-Age-Gender</item>
+        <item>F-50</item>
+        <item>M-26</item>
+        <item>F-22</item>
+        <item>M-20</item>
+    </string-array>
 </resources>
