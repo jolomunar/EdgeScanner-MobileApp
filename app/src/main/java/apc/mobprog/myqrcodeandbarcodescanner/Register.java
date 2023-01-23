@@ -3,6 +3,7 @@ package apc.mobprog.myqrcodeandbarcodescanner;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 
 import android.text.TextUtils;
 import android.content.Intent;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -27,12 +29,14 @@ import com.google.firebase.database.FirebaseDatabase;
 public class Register extends AppCompatActivity {
 
     EditText firstname, lastname, email, password;
-    String first, sur, emailAdd, passwd;
+    Spinner locationCode;
+    String first, sur, emailAdd, passwd, locCode;
     Button register;
 
     FirebaseDatabase node = FirebaseDatabase.getInstance();
     DatabaseReference ref = node.getReference().child("registration-data");
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +48,7 @@ public class Register extends AppCompatActivity {
         lastname = findViewById(R.id.lastname);
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
+        locationCode = findViewById(R.id.locationCode);
 
         beginOnClick();
     }
@@ -58,6 +63,7 @@ public class Register extends AppCompatActivity {
                 sur = lastname.getText().toString();
                 emailAdd = email.getText().toString();
                 passwd = password.getText().toString();
+                locCode = locationCode.getSelectedItem().toString();
 
                 if (TextUtils.isEmpty(first)){
                     firstname.setError("Please Enter Email");
@@ -72,12 +78,12 @@ public class Register extends AppCompatActivity {
                     password.setError("Please Enter Password");
                     return;
                 } else {
-                    registerAccount(first, sur, emailAdd, passwd);
+                    registerAccount(first, sur, emailAdd, passwd, locCode);
                 }
             }
         });
     }
-    public void registerAccount (String first, String sur, String emailAdd, String passwd){
+    public void registerAccount (String first, String sur, String emailAdd, String passwd, String locCode){
         FirebaseAuth auth = FirebaseAuth.getInstance();
         auth.createUserWithEmailAndPassword(emailAdd, passwd).addOnCompleteListener(Register.this,
                 new OnCompleteListener<AuthResult>() {
@@ -87,7 +93,7 @@ public class Register extends AppCompatActivity {
                             Toast.makeText(Register.this, "Account Registered", Toast.LENGTH_LONG).show();
                             FirebaseUser user= auth.getCurrentUser();
 
-                            Intent intent = new Intent(Register.this, MainActivity.class);
+                            Intent intent = new Intent(Register.this, Login.class);
                             startActivity(intent);
                             finish();
 
@@ -97,6 +103,7 @@ public class Register extends AppCompatActivity {
                             promoMap.put("lastname", sur);
                             promoMap.put("email", emailAdd);
                             promoMap.put("password", passwd);
+                            promoMap.put("outlet", locCode);
 
                             ref.push().setValue(promoMap);
                         }
