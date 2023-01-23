@@ -52,10 +52,207 @@
 
     <string-array name="locationCode">
         <item>Select Location Code</item>
-        <item>15-0006</item>
-        <item>15-0013</item>
-        <item>15-0014</item>
-        <item>15-0205</item>
-        <item>15-0440</item>
+        <item>15-0006 - SM Megamall</item>
+        <item>15-0006 - SM Megamall</item>
+        <item>15-0007 - SM Southmall</item>
+        <item>15-0008 - SM Sta. Mesa</item>
+        <item>15-0011 - SM Cubao</item>
+        <item>15-0012 - SM Harrison</item>
+        <item>15-0013 - SM Makati</item>
+        <item>15-0013 - SM Makati</item>
+        <item>15-0014 - SM North Edsa</item>
+        <item>15-0014 - SM North Edsa</item>
+        <item>15-0017 - SM Cebu</item>
+        <item>15-0022 - SM Quiapo</item>
+        <item>15-0027 - SM Bacoor</item>
+        <item>15-0030 - SM Fairview</item>
+        <item>15-0071 - SM Iloilo</item>
+        <item>15-0079 - SM City Manila</item>
+        <item>15-0096 - SM Davao</item>
+        <item>15-0108 - SM Cagayan De Oro</item>
+        <item>15-0109 - SM Bicutan</item>
+        <item>15-0140 - SM Lucena</item>
+        <item>15-0146 - SM Baguio</item>
+        <item>15-0147 - SM Marilao</item>
+        <item>15-0184 - SM Batangas</item>
+        <item>15-0197 - SM San Lazaro</item>
+        <item>15-0199 - SM Sucat</item>
+        <item>15-0205 - SM Mall of Asia</item>
+        <item>15-0206 - SM Sta. Rosa</item>
+        <item>15-0208 - SM Clark</item>
+        <item>15-0238 - SM Lipa</item>
+        <item>15-0257 - SM Bacolod</item>
+        <item>15-0290 - SM Taytay</item>
+        <item>15-0324 - SM Marikina</item>
+        <item>15-0326 - SM BALIWAG</item>
+        <item>15-0331 - SM NAGA</item>
+        <item>15-0335 - SM ROSALES</item>
+        <item>15-0375 - SM Tarlac</item>
+        <item>15-0384 - SM Calamba</item>
+        <item>15-0385 - SM San Pablo</item>
+        <item>15-0386 - SM Novaliches</item>
+        <item>15-0392 - SM Masinag</item>
+        <item>15-0397 - SM San Fernando</item>
+        <item>15-0398 - SM Olongapo</item>
+        <item>15-0413 - SM Consolacion</item>
+        <item>15-0414 - SM Gensan</item>
+        <item>15-0424 - SM Lanang</item>
+        <item>15-0440 - SM Aura Premier</item>
+        <item>15-0446 - SM BF Parañaque</item>
+        <item>15-0453 - SM Cauayan</item>
+        <item>15-0484 - SM San Mateo</item>
+        <item>15-0493 - SM Cabanatuan</item>
+        <item>15-0494 - SM Seaside Cebu</item>
+        <item>15-0518 - SM San Jose Del Monte</item>
+        <item>15-0519 - SM Trece Martires</item>
+        <item>15-0537 - SM Molino</item>
+        <item>15-0538 - SM Store East Ortigas</item>
+        <item>15-0572 - SM Puerto Princesa</item>
+        <item>15-0581 - SM Cubao E-Store</item>
+        <item>15-0595 - SM Urdaneta</item>
+        <item>15-0598 - SM City Telabastagan</item>
+        <item>15-0620 - SM Valenzuela</item>
+        <item>15-0628 - SM Makati - Outdoors</item>
+        <item>15-0640 - SM City Olongapo Central</item>
+        <item>15-0643 - SM Estancia</item>
+        <item>15-0660 - SM Butuan</item>
+        <item>15-0661 - SM Mindpro Zamboanga</item>
+        <item>15-0740 - SM Grand Central</item>
+        <item>15-0010 - Robinsons Galleria</item>
+        <item>15-0023 - Robinsons Ermita</item>
+        <item>15-0051 - Robinsons Metropolis</item>
+        <item>15-0065 - Robinsons Imus</item>
+        <item>15-0081 - Robinsons Cebu</item>
+        <item>15-0091 - Robinsons Metro East</item>
+        <item>15-0098 - Robinsons Pampanga</item>
+        <item>15-0130 - Robinsons Bacolod</item>
+        <item>15-0134 - Robinsons Dasmarinas</item>
+        <item>15-0141 - Robinsons Lipa</item>
+        <item>15-0149 - Robinsons Ermita - SE</item>
+        <item>15-0151 - Robinsons Bulacan</item>
+        <item>15-0176 - Robinsons Angeles - SE</item>
+        <item>15-0178 - Robinsons Place - Bacolod 2</item>
+        <item>15-0216 - Robinsons Dagupan</item>
+        <item>15-0223 - Robinsons Cagayan</item>
+        <item>15-0327 - Robinsons Cabanatuan</item>
+        <item>15-0357 - Robinsons Dumaguete</item>
+        <item>15-0361 - Robinsons Laoag</item>
+        <item>15-0412 - Robinsons Calasiao</item>
+        <item>15-0416 - Robinsons Puerto Princesa</item>
+        <item>15-0427 - Robinsons Magnolia</item>
+        <item>15-0447 - Robinsons Butuan</item>
+        <item>15-0448 - Robinsons Roxas</item>
+        <item>15-0449 - Robinsons Malolos</item>
+        <item>15-0450 - Robinsons Santiago</item>
+        <item>15-0506 - Robinsons Galleria Cebu</item>
+        <item>15-0523 - Robinsons Tagum</item>
+        <item>15-0524 - Robinsons General Trias</item>
+        <item>15-0540 - Robinsons Jaro Iloilo</item>
+        <item>15-0555 - Robinsons Southpark</item>
+        <item>15-0569 - Robinsons Iligan</item>
+        <item>15-0576 - Robinsons Naga</item>
+        <item>15-0587 - Robinsons Cloverleaf</item>
+        <item>15-0589 - Robinsons Cotabato</item>
+        <item>15-0593 - Robinsons North Tacloban</item>
+        <item>15-0596 - Robinsons Ormoc</item>
+        <item>15-0612 - Robinsons Tuguegarao</item>
+        <item>15-0625 - Robinsons Valencia</item>
+        <item>15-0026 - Olympic Village Isetann</item>
+        <item>15-0029 - Olympic Village Sta Lucia</item>
+        <item>15-0033 - Olympic Village Star EDSA</item>
+        <item>15-0035 - Olympic Village Megamall</item>
+        <item>15-0036 - Olympic Village North EDSA</item>
+        <item>15-0068 - Olympic Village Imus</item>
+        <item>15-0069 - Olympic Village Cebu</item>
+        <item>15-0106 - Olympic Village Pampanga</item>
+        <item>15-0137 - Olympic Village Dasmarinas</item>
+        <item>15-0138 - Olympic Village Sta Rosa</item>
+        <item>15-0177 - Olympic Village Market Market</item>
+        <item>15-0212 - Olympic Village Southmall</item>
+        <item>15-0226 - Olympic Village Gateway</item>
+        <item>15-0249 - Olympic Village Pioneer</item>
+        <item>15-0266 - Olympic Village Trinoma</item>
+        <item>15-0444 - Olympic Village Lipa</item>
+        <item>15-0482 - Olympic Village Glorietta 2</item>
+        <item>15-0487 - Olympic Village Fisher Mall</item>
+        <item>15-0528 - Olympic Village Farmers</item>
+        <item>15-0553 - Olympic Village Antipolo</item>
+        <item>15-0632 - Olympic Village RDS Las Piñas</item>
+        <item>15-0641 - Olympic Village Galleria South</item>
+        <item>15-0092 - Planet Sports -Mamplasan</item>
+        <item>15-0135 - Planet Sports -Glorietta</item>
+        <item>15-0143 - Planet Sports -Pasig</item>
+        <item>15-0264 - Planet Sports -Greenhills</item>
+        <item>15-0292 - Planet Sports -Alabang</item>
+        <item>15-0358 - Planet Sports -Trinoma</item>
+        <item>15-0381 - Planet Sports - Cebu</item>
+        <item>15-0417 - Planet Sports -Subic</item>
+        <item>15-0421 - Planet Sports -Cebu</item>
+        <item>15-0430 - Planet Sports -SW Munoz</item>
+        <item>15-0431 - Planet Sports -SW Libis</item>
+        <item>15-0550 - Planet Sports -SW Market</item>
+        <item>15-0132 - Tobys -Rustans Shangrila</item>
+        <item>15-0383 - Tobys -North Edsa</item>
+        <item>15-0195 - Tobys -Megamall</item>
+        <item>15-0193 - Tobys -The Podium</item>
+        <item>15-0389 - Tobys Arena -Glorietta</item>
+        <item>15-0222 - Tobys -Manila</item>
+        <item>15-0113 - Tobys -Robinsons Galleria</item>
+        <item>15-0325 - Tobys -Bacoor</item>
+        <item>15-0104 - Tobys -Fairview</item>
+        <item>15-0103 - Tobys -Cebu</item>
+        <item>15-0196 - Tobys -Pampanga</item>
+        <item>15-0131 - Tobys-Valenzuela</item>
+        <item>15-0363 - Tobys -Sta. Rosa</item>
+        <item>15-0102 - Tobys -Mall Of Asia</item>
+        <item>15-0315 - Tobys -The Block</item>
+        <item>15-0215 - Tobys -Trinoma</item>
+        <item>15-0301 - Tobys -Taytay</item>
+        <item>15-0251 - Tobys -SM Cebu - NORTHWING</item>
+        <item>15-0105 - Tobys -Marikina</item>
+        <item>15-0268 - Tobys -Rosario</item>
+        <item>15-0200 - Tobys ATC</item>
+        <item>15-0395 - Tobys -Cagayan</item>
+        <item>15-0112 - Tobys -Festival</item>
+        <item>15-0365 - Tobys Abreeza -Davao</item>
+        <item>15-0252 - Gaisano - Metro - Lucena</item>
+        <item>15-0224 - Gaisano - Tacloban</item>
+        <item>15-0283 - Gaisano - General - Lobby Sale</item>
+        <item>15-0253 - Gaisano - Roxas</item>
+        <item>15-0133 - Gaisano - Gatuslao Bacolod</item>
+        <item>15-0227 - Gaisano - Mactan</item>
+        <item>15-0254 - Gaisano - South</item>
+        <item>15-0185 - Gaisano - Iloilo CON</item>
+        <item>15-0380 - Gaisano Grand Mactan</item>
+        <item>15-0610 - Gaisano Grand - Tagum</item>
+        <item>15-0359 - Gaisano Grand Mactan</item>
+        <item>15-0591 - RSH - Megatrade Hall</item>
+        <item>15-0340 - RSH - Starmill RDS Pampanga</item>
+        <item>15-0535 - RSH - UP Town Center</item>
+        <item>15-0556 - RSH - Valenzuela</item>
+        <item>15-0536 - RSH - The 30th Ayala Mall</item>
+        <item>15-0544 - RSH  - Recto</item>
+        <item>15-0152 - Sports Central - Baguio</item>
+        <item>15-0183 - Sports Central - Sta Mesa</item>
+        <item>15-0534 - Sports Central - Batangas</item>
+        <item>15-0188 - Sports Central - Dasmarinas</item>
+        <item>15-0189 - Sports Central - Fairview</item>
+        <item>15-0240 - Sports Central - Pampanga</item>
+        <item>15-0241 - Sports Central - Mall Of Asia</item>
+        <item>15-0190 - Sports Central - North Edsa</item>
+        <item>15-0573 - Sports Central-SM Seaside Cebu</item>
+        <item>15-0634 - Sports Central - Cauayan</item>
+        <item>15-0156 - Sports Central - SM Lanang</item>
+        <item>15-0586 - Sports Central-Puerto Princesa</item>
+        <item>15-0626 - Sports Central-SM Makati</item>
+        <item>15-0621 - Sports Central-SM Iloilo</item>
+        <item>15-0507 - Sports Central - SM Southmall</item>
+        <item>15-0155 - Royal Sporting House - Ermita</item>
+        <item>15-0099 - Royal Sporting House -Festival</item>
+        <item>15-0142 - Royal Sporting House-Galleria</item>
+        <item>15-0129 - Royal Sporting House - Lipa</item>
+        <item>15-0139 - Royal Sporting House - Cebu</item>
+
+
     </string-array>
 </resources>
