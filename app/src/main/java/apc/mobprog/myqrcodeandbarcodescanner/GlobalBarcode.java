@@ -9,8 +9,7 @@ public class GlobalBarcode {
     public static String size;
     public static String color;
     public static String uPrice;
-    public static String rTotal;
+    public static String outlet;
     public static String totalQuantity;
-    public static String remarks;
     public static String brand;
 }

@@ -264,7 +264,7 @@
 
     //outlet
     <string-array name="outlet">
-        <item>Select Location Code</item>
+        <item>Select Outlet</item>
         <item>SM Megamall</item>
         <item>SM Megamall</item>
         <item>SM Southmall</item>

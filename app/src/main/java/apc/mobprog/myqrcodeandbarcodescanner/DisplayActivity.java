@@ -52,8 +52,8 @@ public class DisplayActivity extends AppCompatActivity {
     Button scanAgain;
     Button sendData;
     ListView listView;
-    EditText stockCode, unitPrice, runningTotal, tQuantity;
-    Spinner brand, size, color, remarks;
+    EditText stockCode, unitPrice, tQuantity;
+    Spinner brand, size, color, outlet;
     ArrayAdapter<String> arr;
      String esEndpoint = "https://edgescanner.herokuapp.com/api/ess-api/create";
 //   String esEndpoint = "http://localhost:8000/api/ess-api/create";
@@ -61,7 +61,7 @@ public class DisplayActivity extends AppCompatActivity {
 //   String esEndpoint = "https://e7bf9b6b00c727d40a25426a9ec5c20e.m.pipedream.net";
 //   String esEndpoint = "https://eotwyaq96coc31b.m.pipedream.net";
 //   String esEndpoint = "https://edgescanner.myapc.edu.ph/api/ess-api/create";
-    @SuppressLint("WrongViewCast")
+    @SuppressLint({"WrongViewCast", "MissingInflatedId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,10 +88,9 @@ public class DisplayActivity extends AppCompatActivity {
 //        Log.e(TAG, "55555  - RESULT : " + GlobalBarcode.arrayList.toString());
         stockCode = findViewById(R.id.stockcode);
         unitPrice = findViewById(R.id.unitprice);
-        runningTotal = findViewById(R.id.runningtotal);
-        remarks = findViewById(R.id.remarks);
         tQuantity = findViewById(R.id.totalquantity);
         brand = findViewById(R.id.brand);
+
 
         //Color Drop Down
         color = findViewById(R.id.color);
@@ -114,12 +113,12 @@ public class DisplayActivity extends AppCompatActivity {
         shoeBrand.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         brand.setAdapter(shoeBrand);
 
-        //Remarks Drop Down
-        remarks = findViewById(R.id.remarks);
-        ArrayAdapter<String> remarksAgeGender = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
-                getResources().getStringArray(R.array.remarks));
-        remarksAgeGender.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        remarks.setAdapter(remarksAgeGender);
+        //Outlet Drop Down
+        outlet = findViewById(R.id.outlet);
+        ArrayAdapter<String> address = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
+                getResources().getStringArray(R.array.outlet));
+        address.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        outlet.setAdapter(address);
     }
 
 
@@ -142,20 +141,15 @@ public class DisplayActivity extends AppCompatActivity {
                 GlobalBarcode.size = size.getSelectedItem().toString();
                 GlobalBarcode.color = color.getSelectedItem().toString();
                 GlobalBarcode.uPrice = unitPrice.getText().toString();
-                GlobalBarcode.rTotal = runningTotal.getText().toString();
                 GlobalBarcode.totalQuantity = tQuantity.getText().toString();
-                GlobalBarcode.remarks = remarks.getSelectedItem().toString();
                 GlobalBarcode.brand = brand.getSelectedItem().toString();
-
+                GlobalBarcode.outlet = outlet.getSelectedItem().toString();
 
                 if (TextUtils.isEmpty(GlobalBarcode.stCode)) {
                     stockCode.setError("This Field is Required");
                     return;
                 } else if (TextUtils.isEmpty(GlobalBarcode.uPrice)) {
                     unitPrice.setError("This Field is Required");
-                    return;
-                } else if (TextUtils.isEmpty(GlobalBarcode.rTotal)) {
-                    runningTotal.setError("This Field is Required");
                     return;
                 } else if (TextUtils.isEmpty(GlobalBarcode.totalQuantity)) {
                     tQuantity.setError("This Field is Required");
@@ -314,11 +308,9 @@ public class DisplayActivity extends AppCompatActivity {
                 result.append("\"stock_code\":\"" + GlobalBarcode.stCode + "\",");
                 result.append("\"size\":\"" + GlobalBarcode.size + "\",");
                 result.append("\"color\":\"" + GlobalBarcode.color + "\",");
-                result.append("\"running_total\":\"" + GlobalBarcode.rTotal + "\",");
                 result.append("\"total_quantity\":\"" + GlobalBarcode.totalQuantity + "\",");
                 result.append("\"unit_price\":\"" + GlobalBarcode.uPrice + "\",");
                 result.append("\"brand\":\"" + GlobalBarcode.brand + "\",");
-                result.append("\"remarks_age_gender\":\"" + GlobalBarcode.remarks + "\",");
                 result.append("\"" + URLEncoder.encode(entry.getKey(), "UTF-8"));
                 result.append("\":[");
 
