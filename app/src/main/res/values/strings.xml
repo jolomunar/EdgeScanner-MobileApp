@@ -64,14 +64,11 @@
     <string-array name="locationCode">
         <item>Select Location Code</item>
         <item>15-0006 - SM Megamall</item>
-        <item>15-0006 - SM Megamall</item>
         <item>15-0007 - SM Southmall</item>
         <item>15-0008 - SM Sta. Mesa</item>
         <item>15-0011 - SM Cubao</item>
         <item>15-0012 - SM Harrison</item>
         <item>15-0013 - SM Makati</item>
-        <item>15-0013 - SM Makati</item>
-        <item>15-0014 - SM North Edsa</item>
         <item>15-0014 - SM North Edsa</item>
         <item>15-0017 - SM Cebu</item>
         <item>15-0022 - SM Quiapo</item>
