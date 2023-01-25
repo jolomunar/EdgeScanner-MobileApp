@@ -23,6 +23,8 @@
     <string-array name= "size">
         <item>Select Size</item>
         <item>6</item>
+        <item>6.5</item>
+        <item>7</item>
         <item>7.5</item>
         <item>8</item>
         <item>8.5</item>
@@ -49,6 +51,7 @@
         <item>RED</item>
     </string-array>
 
+    //Remarks
     <string-array name= "remarks">
         <item>Select Remarks-Age-Gender</item>
         <item>F-50</item>
@@ -57,7 +60,7 @@
         <item>M-20</item>
     </string-array>
 
-
+    //LocationCode
     <string-array name="locationCode">
         <item>Select Location Code</item>
         <item>15-0006 - SM Megamall</item>
@@ -266,14 +269,11 @@
     <string-array name="outlet">
         <item>Select Outlet</item>
         <item>SM Megamall</item>
-        <item>SM Megamall</item>
         <item>SM Southmall</item>
         <item>SM Sta. Mesa</item>
         <item>SM Cubao</item>
         <item>SM Harrison</item>
         <item>SM Makati</item>
-        <item>SM Makati</item>
-        <item>SM North Edsa</item>
         <item>SM North Edsa</item>
         <item>SM Cebu</item>
         <item>SM Quiapo</item>
