@@ -1,48 +1,44 @@
 package apc.mobprog.myqrcodeandbarcodescanner;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.EditText;
-import android.app.ProgressDialog;
-import android.text.TextUtils;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import android.content.Context;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.net.URL;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.util.List;
-import java.util.Map;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONStringer;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -58,7 +54,7 @@ public class DisplayActivity extends AppCompatActivity {
      String esEndpoint = "https://edgescanner.herokuapp.com/api/ess-api/create";
 //   String esEndpoint = "http://localhost:8000/api/ess-api/create";
 //   String esEndpoint = "https://eok6418nj8g0skh.m.pipedream.net";
-//   String esEndpoint = "https://e7bf9b6b00c727d40a25426a9ec5c20e.m.pipedream.net";
+//   String esEndpoint = "https://eopcchi7z7sfqmw.m.pipedream.net";
 //   String esEndpoint = "https://eotwyaq96coc31b.m.pipedream.net";
 //   String esEndpoint = "https://edgescanner.myapc.edu.ph/api/ess-api/create";
     @SuppressLint({"WrongViewCast", "MissingInflatedId"})
@@ -311,6 +307,7 @@ public class DisplayActivity extends AppCompatActivity {
                 result.append("\"total_quantity\":\"" + GlobalBarcode.totalQuantity + "\",");
                 result.append("\"unit_price\":\"" + GlobalBarcode.uPrice + "\",");
                 result.append("\"brand\":\"" + GlobalBarcode.brand + "\",");
+                result.append("\"outlet\":\"" + GlobalBarcode.outlet + "\",");
                 result.append("\"" + URLEncoder.encode(entry.getKey(), "UTF-8"));
                 result.append("\":[");
 
