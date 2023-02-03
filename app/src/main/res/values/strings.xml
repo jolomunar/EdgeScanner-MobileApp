@@ -22,25 +22,25 @@
 
     <string-array name= "size">
         <item>Select Size</item>
-        <item>6</item>
-        <item>6.5</item>
-        <item>7</item>
-        <item>7.5</item>
-        <item>8</item>
-        <item>8.5</item>
-        <item>9</item>
-        <item>9.5</item>
-        <item>10</item>
-        <item>10.5</item>
-        <item>11</item>
-        <item>11.5</item>
-        <item>12</item>
-        <item>12.5</item>
-        <item>13</item>
-        <item>13.5</item>
-        <item>14</item>
-        <item>14.5</item>
-        <item>15</item>
+        <item>50</item>
+        <item>55</item>
+        <item>60</item>
+        <item>65</item>
+        <item>70</item>
+        <item>75</item>
+        <item>80</item>
+        <item>85</item>
+        <item>90</item>
+        <item>95</item>
+        <item>100</item>
+        <item>105</item>
+        <item>110</item>
+        <item>115</item>
+        <item>120</item>
+        <item>125</item>
+        <item>130</item>
+        <item>135</item>
+        <item>140</item>
     </string-array>
 
     <string-array name= "color">
