@@ -242,6 +242,12 @@ public class DisplayActivity extends AppCompatActivity {
             super.onPostExecute(s);
             pD.dismiss();
 
+            if (s.contains("Successfully insert the data")){
+                Toast.makeText(DisplayActivity.this, "Successfully Send Data!", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(DisplayActivity.this, "Incorrect Input!", Toast.LENGTH_LONG).show();
+            }
+
             try {
 
                 JSONObject jsonObject = new JSONObject(s);
