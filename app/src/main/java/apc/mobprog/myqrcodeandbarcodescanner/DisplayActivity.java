@@ -1,44 +1,54 @@
 package apc.mobprog.myqrcodeandbarcodescanner;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.EditText;
+import android.app.ProgressDialog;
+import android.text.TextUtils;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import android.content.Context;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.net.URL;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.util.List;
 import java.util.Map;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONStringer;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -48,21 +58,36 @@ public class DisplayActivity extends AppCompatActivity {
     Button scanAgain;
     Button sendData;
     ListView listView;
-    EditText stockCode, unitPrice, tQuantity;
-    Spinner brand, size, color, outlet;
+    EditText stockCode, unitPrice, color, tQuantity;
+    Spinner brand, size, outlet;
     ArrayAdapter<String> arr;
-     String esEndpoint = "https://edgescanner.herokuapp.com/api/ess-api/create";
+
+    FirebaseDatabase node = FirebaseDatabase.getInstance();
+    DatabaseReference ref = node.getReference().child("registration-data");
+
+    private TextView textView2;
+
+    //   String esEndpoint = "https://edgescanner.herokuapp.com/api/ess-api/create";
 //   String esEndpoint = "http://localhost:8000/api/ess-api/create";
 //   String esEndpoint = "https://eok6418nj8g0skh.m.pipedream.net";
-//   String esEndpoint = "https://eopcchi7z7sfqmw.m.pipedream.net";
+//   String esEndpoint = "https://e7bf9b6b00c727d40a25426a9ec5c20e.m.pipedream.net";
 //   String esEndpoint = "https://eotwyaq96coc31b.m.pipedream.net";
-//   String esEndpoint = "https://edgescanner.myapc.edu.ph/api/ess-api/create";
+    String esEndpoint = "https://edgescanner.myapc.edu.ph/api/ess-api/create";
+
     @SuppressLint({"WrongViewCast", "MissingInflatedId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        node = FirebaseDatabase.getInstance();
+        ref = node.getReference().child("registration-data").child("new-user");
+
+        textView2 = findViewById(R.id.textView2);
+
+        showFirstName();
+
 
         Intent intent = getIntent();
         GlobalBarcode.barcode = intent.getStringExtra("barcode_nr");
@@ -86,14 +111,7 @@ public class DisplayActivity extends AppCompatActivity {
         unitPrice = findViewById(R.id.unitprice);
         tQuantity = findViewById(R.id.totalquantity);
         brand = findViewById(R.id.brand);
-
-
-        //Color Drop Down
         color = findViewById(R.id.color);
-        ArrayAdapter<String> shoeColor = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
-                getResources().getStringArray(R.array.color));
-        shoeColor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        color.setAdapter(shoeColor);
 
         //Size Drop Down
         size = findViewById(R.id.size);
@@ -117,6 +135,15 @@ public class DisplayActivity extends AppCompatActivity {
         outlet.setAdapter(address);
     }
 
+    private void showFirstName() {
+        Intent intent = getIntent();
+        PromoData.firstname = intent.getStringExtra("firstname");
+
+        textView2.setText(PromoData.firstname);
+
+
+    }
+
 
     public void beginOnClick() {
         scanAgain = findViewById(R.id.button2);
@@ -135,7 +162,7 @@ public class DisplayActivity extends AppCompatActivity {
             public void onClick(View v) {
                 GlobalBarcode.stCode = stockCode.getText().toString();
                 GlobalBarcode.size = size.getSelectedItem().toString();
-                GlobalBarcode.color = color.getSelectedItem().toString();
+                GlobalBarcode.color = color.getText().toString();
                 GlobalBarcode.uPrice = unitPrice.getText().toString();
                 GlobalBarcode.totalQuantity = tQuantity.getText().toString();
                 GlobalBarcode.brand = brand.getSelectedItem().toString();
@@ -143,6 +170,9 @@ public class DisplayActivity extends AppCompatActivity {
 
                 if (TextUtils.isEmpty(GlobalBarcode.stCode)) {
                     stockCode.setError("This Field is Required");
+                    return;
+                } else if (TextUtils.isEmpty(GlobalBarcode.color)) {
+                    color.setError("This Field is Required");
                     return;
                 } else if (TextUtils.isEmpty(GlobalBarcode.uPrice)) {
                     unitPrice.setError("This Field is Required");
@@ -218,7 +248,7 @@ public class DisplayActivity extends AppCompatActivity {
                         }
                     });
 
-
+                    Log.e(TAG,"77777 - RESULT: " + result);
                     JSONObject json = new JSONObject(result);
                     return json.toString();
 
@@ -248,6 +278,7 @@ public class DisplayActivity extends AppCompatActivity {
                 Toast.makeText(DisplayActivity.this, "Incorrect Input!", Toast.LENGTH_LONG).show();
             }
 
+
             try {
 
                 JSONObject jsonObject = new JSONObject(s);
@@ -257,9 +288,15 @@ public class DisplayActivity extends AppCompatActivity {
                 int index_no = 1;
                 JSONObject jsonObject1 = jsonArray1.getJSONObject(index_no);
 
+                //display success message
+//                Toast.makeText(DisplayActivity.this, "Successfully sent data", Toast.LENGTH_LONG).show();
+
 
             } catch (JSONException e) {
                 e.printStackTrace();
+
+                //displaying error message
+//                Toast.makeText(DisplayActivity.this, "Failed to send data", Toast.LENGTH_LONG).show();
             }
         }
 
@@ -300,6 +337,7 @@ public class DisplayActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+//            Log.e(TAG, "55555  - RESULT : " + response);
             return response;
         }
 
