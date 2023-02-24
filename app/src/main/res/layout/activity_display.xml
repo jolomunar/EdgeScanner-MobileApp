@@ -122,9 +122,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.482" />
 
-    <Spinner
+            <Spinner
                 android:id="@+id/size"
-                android:layout_width="156dp"
+                android:layout_width="214dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Size"
@@ -137,19 +137,21 @@
                 app:layout_constraintVertical_bias="0.065"
                 tools:ignore="SpeakableTextPresentCheck" />
 
-            <Spinner
+            <EditText
                 android:id="@+id/color"
-                android:layout_width="154dp"
-                android:layout_height="53dp"
-                android:layout_marginTop="32dp"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginTop="12dp"
                 android:ems="10"
                 android:hint="Color"
+                android:inputType="textPersonName"
                 android:minHeight="48dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.066"
+                app:layout_constraintHorizontal_bias="0.024"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/size"
-                tools:ignore="SpeakableTextPresentCheck" />
+                app:layout_constraintTop_toBottomOf="@+id/locationCode"
+                app:layout_constraintVertical_bias="0.011" />
 
             <EditText
                 android:id="@+id/unitprice"

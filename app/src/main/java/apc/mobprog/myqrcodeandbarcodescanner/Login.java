@@ -18,9 +18,17 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthEmailException;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
 
 public class Login extends AppCompatActivity {
 
@@ -30,6 +38,9 @@ public class Login extends AppCompatActivity {
     Button login;
     private FirebaseAuth mAuth;
     private static final String TAG = "Login";
+
+    FirebaseDatabase node = FirebaseDatabase.getInstance();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,12 +107,41 @@ public class Login extends AppCompatActivity {
         mAuth.signInWithEmailAndPassword(emailAdd, passwd).addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
+
+
                 if (task.isSuccessful()) {
                     FirebaseUser newUser = mAuth.getCurrentUser();
                     Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(Login.this, MainActivity.class);
                     startActivity(intent);
                     finish();
+
+
+                    DatabaseReference ref = node.getInstance().getReference().child("registration-data").child("new-user");
+                    Query userCheck = ref.orderByChild("new-user").equalTo(emailAdd);
+                    userCheck.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if(snapshot.exists()){
+                               String passwd = snapshot.child("password").getValue(PromoData.class).toString();
+
+                                if (passwd.equals(PromoData.password)){
+                                    PromoData.firstname = snapshot.child("firstname").getValue().toString();
+
+                                    Intent intent = new Intent(getApplicationContext(), DisplayActivity.class);
+                                    intent.putExtra("registration-data", PromoData.firstname);
+                                    startActivity(intent);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+
                 }
                 else {
                     try {
@@ -110,15 +150,17 @@ public class Login extends AppCompatActivity {
                         email.setError("User Invalid or Non-existent");
                         email.requestFocus();
                     } catch(FirebaseAuthInvalidCredentialsException e) {
-                        email.setError("Invalid Credentials");
-                        email.requestFocus();
+                        password.setError("Incorrect Password");
+                        password.requestFocus();
                     } catch(Exception e) {
                         Log.e(TAG, e.getMessage());
                         Toast.makeText(Login.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
+
             }
 
         });
     }
+
 }

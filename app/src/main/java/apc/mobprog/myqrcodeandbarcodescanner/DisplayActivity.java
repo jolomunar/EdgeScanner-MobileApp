@@ -68,6 +68,7 @@ public class DisplayActivity extends AppCompatActivity {
     private TextView textView2;
 
     //   String esEndpoint = "https://edgescanner.herokuapp.com/api/ess-api/create";
+//   String esEndpoint = "https://edgescanner.herokuapp.com/api/ess-api/create";
 //   String esEndpoint = "http://localhost:8000/api/ess-api/create";
 //   String esEndpoint = "https://eok6418nj8g0skh.m.pipedream.net";
 //   String esEndpoint = "https://e7bf9b6b00c727d40a25426a9ec5c20e.m.pipedream.net";
@@ -140,7 +141,6 @@ public class DisplayActivity extends AppCompatActivity {
         PromoData.firstname = intent.getStringExtra("firstname");
 
         textView2.setText(PromoData.firstname);
-
 
     }
 

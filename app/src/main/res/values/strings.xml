@@ -11,16 +11,19 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="dialog_message">string</string>
+    <string name="dialog_title">string</string>
 
-    <string-array name= "brand">
+    <string-array name="brand">
         <item>Select Brand</item>
         <item>Skechers</item>
         <item>Merrell</item>
         <item>Mario Dboro</item>
         <item>Florsheim</item>
+        <item>Saucony</item>
     </string-array>
 
-    <string-array name= "size">
+    <string-array name="size">
         <item>Select Size</item>
         <item>50</item>
         <item>55</item>
@@ -41,23 +44,6 @@
         <item>130</item>
         <item>135</item>
         <item>140</item>
-    </string-array>
-
-    <string-array name= "color">
-        <item>Select Color</item>
-        <item>BLK</item>
-        <item>BLU</item>
-        <item>WHT</item>
-        <item>RED</item>
-    </string-array>
-
-    //Remarks
-    <string-array name= "remarks">
-        <item>Select Remarks-Age-Gender</item>
-        <item>F-50</item>
-        <item>M-26</item>
-        <item>F-22</item>
-        <item>M-20</item>
     </string-array>
 
     //LocationCode
@@ -462,6 +448,12 @@
         <item>Royal Sporting House-Galleria</item>
         <item>Royal Sporting House - Lipa</item>
         <item>Royal Sporting House - Cebu</item>
+    </string-array>
+
+    <string-array name="empGen">
+        <item>Select Gender</item>
+        <item>Male</item>
+        <item>Female</item>
     </string-array>
 
 </resources>

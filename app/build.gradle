@@ -49,5 +49,5 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.android.volley:volley-cronet:1.2.1'
     implementation 'com.journeyapps:zxing-android-embedded:4.0.2'
-    implementation 'com.google.zxing:core:3.2.0'
+    implementation 'com.google.zxing:core:3.5.1'
 }

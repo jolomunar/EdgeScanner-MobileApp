@@ -4,14 +4,19 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
+import android.util.Patterns;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-
+import android.app.AlertDialog;
 import java.util.HashMap;
 
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.text.TextUtils;
 import android.content.Intent;
 import android.widget.Spinner;
@@ -22,19 +27,23 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class Register extends AppCompatActivity {
 
-    EditText firstname, lastname, email, password, mobNum;
-    Spinner locationCode;
-    String first, sur, emailAdd, passwd, locCode, mobileNumber;
+    EditText firstname, lastname, email, password, mobNum, empAge;
+    Spinner locationCode, empGen;
+    String first, sur, emailAdd, passwd, locCode, mobileNumber, gender, age;
     Button register;
 
     FirebaseDatabase node = FirebaseDatabase.getInstance();
-    DatabaseReference ref = node.getReference().child("registration-data");
+    DatabaseReference ref = node.getReference().child("registration-data").child("new-user");
+
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -49,6 +58,7 @@ public class Register extends AppCompatActivity {
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
         mobNum= findViewById(R.id.mobNum);
+        empAge = findViewById(R.id.empAge);
 
         //Location Code Dropdown
         locationCode = findViewById(R.id.locationCode);
@@ -57,7 +67,16 @@ public class Register extends AppCompatActivity {
         outlet.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         locationCode.setAdapter(outlet);
 
+        //Gender Dropdown
+        empGen = findViewById(R.id.empGen);
+        ArrayAdapter<String> gender = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
+                getResources().getStringArray(R.array.empGen));
+        outlet.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        empGen.setAdapter(gender);
+
         beginOnClick();
+
+
     }
     public void beginOnClick() {
 
@@ -72,13 +91,15 @@ public class Register extends AppCompatActivity {
                 passwd = password.getText().toString();
                 locCode = locationCode.getSelectedItem().toString();
                 mobileNumber = mobNum.getText().toString();
+                gender = empGen.getSelectedItem().toString();
+                age = empAge.getText().toString();
 
 
                 if (TextUtils.isEmpty(first)){
-                    firstname.setError("Please Enter Email");
+                    firstname.setError("Please Enter First Name");
                     return;
                 } else if (TextUtils.isEmpty(sur)) {
-                    lastname.setError("Please Enter Password");
+                    lastname.setError("Please Enter Last Name");
                     return;
                 } else if (TextUtils.isEmpty(mobileNumber)) {
                     mobNum.setError("Please Enter Mobile Number");
@@ -86,26 +107,36 @@ public class Register extends AppCompatActivity {
                 } else if (TextUtils.isEmpty(emailAdd)) {
                     email.setError("Please Enter Email");
                     return;
-                } else if (TextUtils.isEmpty(passwd)) {
-                    password.setError("Please Enter Password");
+                } else if (!Patterns.EMAIL_ADDRESS.matcher(emailAdd).matches()) {
+                    email.setError("Email is Invalid");
+                    return;
+                } else if (TextUtils.isEmpty(passwd) || passwd.length() < 8) {
+                    password.setError("Password must contain at least 8 characters");
+                    return;
+                } else if (TextUtils.isEmpty(age)) {
+                    empAge.setError("Please Enter Age");
                     return;
                 } else {
-                    registerAccount(first, sur, emailAdd, passwd, locCode, mobileNumber);
+                    registerAccount(first, sur, emailAdd, passwd, locCode, mobileNumber, age, gender);
                 }
             }
         });
     }
-    public void registerAccount(String first, String sur, String emailAdd, String passwd, String locCode, String mobileNumber){
+    public void registerAccount(String first, String sur, String emailAdd, String passwd, String locCode, String mobileNumber
+    , String age, String gender){
+
         FirebaseAuth auth = FirebaseAuth.getInstance();
         auth.createUserWithEmailAndPassword(emailAdd, passwd).addOnCompleteListener(Register.this,
                 new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+
                         if(task.isSuccessful()) {
+
                             Toast.makeText(Register.this, "Account Registered", Toast.LENGTH_LONG).show();
                             FirebaseUser user= auth.getCurrentUser();
 
-                            Intent intent = new Intent(Register.this, Login.class);
+                            Intent intent = new Intent(Register.this, PrivacyPolicy.class);
                             startActivity(intent);
                             finish();
 
@@ -117,11 +148,26 @@ public class Register extends AppCompatActivity {
                             promoMap.put("password", passwd);
                             promoMap.put("outlet", locCode);
                             promoMap.put("mobNum", mobileNumber);
+                            promoMap.put("empAge", age);
+                            promoMap.put("empGen", gender);
 
                             ref.push().setValue(promoMap);
                         }
                         else {
-
+                            try {
+                                throw task.getException();
+                            } catch (FirebaseAuthUserCollisionException e) {
+                                email.setError("Email already existing");
+                                email.requestFocus();
+                                mobNum.setError("Mobile number is already taken");
+                                mobNum.requestFocus();
+                                firstname.setError("First Name is already taken");
+                                firstname.requestFocus();
+                                lastname.setError("Last Name is already taken");
+                                lastname.requestFocus();
+                            }  catch (Exception e) {
+                                Toast.makeText(Register.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                            }
                         }
                     }
                 });
