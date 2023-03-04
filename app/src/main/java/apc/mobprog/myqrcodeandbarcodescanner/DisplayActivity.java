@@ -22,6 +22,9 @@ import android.widget.TextView;
 import android.widget.EditText;
 import android.app.ProgressDialog;
 import android.text.TextUtils;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import android.content.Context;
@@ -62,10 +65,11 @@ public class DisplayActivity extends AppCompatActivity {
     Spinner brand, size, outlet;
     ArrayAdapter<String> arr;
 
-    FirebaseDatabase node = FirebaseDatabase.getInstance();
-    DatabaseReference ref = node.getReference().child("registration-data");
+    TextView textView2, textView3;
 
-    private TextView textView2;
+    FirebaseDatabase node;
+    DatabaseReference ref;
+
 
     //   String esEndpoint = "https://edgescanner.herokuapp.com/api/ess-api/create";
 //   String esEndpoint = "https://edgescanner.herokuapp.com/api/ess-api/create";
@@ -73,22 +77,23 @@ public class DisplayActivity extends AppCompatActivity {
 //   String esEndpoint = "https://eok6418nj8g0skh.m.pipedream.net";
 //   String esEndpoint = "https://e7bf9b6b00c727d40a25426a9ec5c20e.m.pipedream.net";
 //   String esEndpoint = "https://eotwyaq96coc31b.m.pipedream.net";
-    String esEndpoint = "https://edgescanner.myapc.edu.ph/api/ess-api/create";
+   String esEndpoint = "https://edgescanner.myapc.edu.ph/api/ess-api/create";
 
     @SuppressLint({"WrongViewCast", "MissingInflatedId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
+
+
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         node = FirebaseDatabase.getInstance();
-        ref = node.getReference().child("registration-data").child("new-user");
+
+        getFirstName();
 
         textView2 = findViewById(R.id.textView2);
-
-        showFirstName();
-
+        textView3 = findViewById(R.id.textView3);
 
         Intent intent = getIntent();
         GlobalBarcode.barcode = intent.getStringExtra("barcode_nr");
@@ -136,14 +141,38 @@ public class DisplayActivity extends AppCompatActivity {
         outlet.setAdapter(address);
     }
 
-    private void showFirstName() {
-        Intent intent = getIntent();
-        PromoData.firstname = intent.getStringExtra("firstname");
+    public void getFirstName() {
+        // Attach a listener to read the data at our posts reference
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        ref = FirebaseDatabase.getInstance().getReference("registration-data")
+                .child("user").child(userId);
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                PromoData.firstname = dataSnapshot.child("firstname").getValue(String.class);
+                PromoData.lastname = dataSnapshot.child("lastname").getValue(String.class);
+                Toast.makeText(DisplayActivity.this, "Promodiser logged in: " + PromoData.firstname
+                                + PromoData.lastname, Toast.LENGTH_LONG).show();
 
-        textView2.setText(PromoData.firstname);
+                textView2.setText(PromoData.firstname);
+                textView3.setText(PromoData.lastname);
 
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
     }
 
+//    public void showFirstName() {
+//        Intent intent = getIntent();
+//        String firstName = intent.getStringExtra("firstname");
+//
+//        textView2.setText(firstName);
+//
+//    }
 
     public void beginOnClick() {
         scanAgain = findViewById(R.id.button2);
@@ -275,9 +304,8 @@ public class DisplayActivity extends AppCompatActivity {
             if (s.contains("Successfully insert the data")){
                 Toast.makeText(DisplayActivity.this, "Successfully Send Data!", Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(DisplayActivity.this, "Incorrect Input!", Toast.LENGTH_LONG).show();
+                Toast.makeText(DisplayActivity.this, "Failed to create!", Toast.LENGTH_LONG).show();
             }
-
 
             try {
 
@@ -345,6 +373,8 @@ public class DisplayActivity extends AppCompatActivity {
             StringBuilder result = new StringBuilder();
             for (Map.Entry<String, ArrayList<String>> entry : params.entrySet()) {
                 result.append("{");
+                result.append("\"firstname\":\"" + PromoData.firstname + "\",");
+                result.append("\"lastname\":\"" + PromoData.lastname + "\",");
                 result.append("\"stock_code\":\"" + GlobalBarcode.stCode + "\",");
                 result.append("\"size\":\"" + GlobalBarcode.size + "\",");
                 result.append("\"color\":\"" + GlobalBarcode.color + "\",");

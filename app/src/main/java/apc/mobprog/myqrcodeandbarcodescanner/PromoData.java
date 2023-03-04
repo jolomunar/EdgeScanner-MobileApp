@@ -2,8 +2,8 @@ package apc.mobprog.myqrcodeandbarcodescanner;
 
 public class PromoData {
     public static String firstname;
-    public String lastname;
-    public String email;
+    public static String lastname;
+    public static String email;
     public static String password;
     public String locationCode;
     public String mobNum;

@@ -42,7 +42,7 @@ public class Register extends AppCompatActivity {
     Button register;
 
     FirebaseDatabase node = FirebaseDatabase.getInstance();
-    DatabaseReference ref = node.getReference().child("registration-data").child("new-user");
+    DatabaseReference ref;
 
 
     @SuppressLint("MissingInflatedId")
@@ -125,6 +125,8 @@ public class Register extends AppCompatActivity {
     public void registerAccount(String first, String sur, String emailAdd, String passwd, String locCode, String mobileNumber
     , String age, String gender){
 
+
+
         FirebaseAuth auth = FirebaseAuth.getInstance();
         auth.createUserWithEmailAndPassword(emailAdd, passwd).addOnCompleteListener(Register.this,
                 new OnCompleteListener<AuthResult>() {
@@ -133,8 +135,11 @@ public class Register extends AppCompatActivity {
 
                         if(task.isSuccessful()) {
 
+
                             Toast.makeText(Register.this, "Account Registered", Toast.LENGTH_LONG).show();
                             FirebaseUser user= auth.getCurrentUser();
+                            String userId = user.getUid();
+                            ref = node.getReference("registration-data").child("user");
 
                             Intent intent = new Intent(Register.this, PrivacyPolicy.class);
                             startActivity(intent);
@@ -151,7 +156,7 @@ public class Register extends AppCompatActivity {
                             promoMap.put("empAge", age);
                             promoMap.put("empGen", gender);
 
-                            ref.push().setValue(promoMap);
+                            ref.child(userId).setValue(promoMap);
                         }
                         else {
                             try {

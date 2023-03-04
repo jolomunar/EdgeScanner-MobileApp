@@ -111,25 +111,28 @@ public class Login extends AppCompatActivity {
 
                 if (task.isSuccessful()) {
                     FirebaseUser newUser = mAuth.getCurrentUser();
-                    Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(Login.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
+                    String userUid = newUser.getUid();
 
+                    PromoData.email = email.getText().toString().trim();
+                    PromoData.password = password.getText().toString().trim();
 
-                    DatabaseReference ref = node.getInstance().getReference().child("registration-data").child("new-user");
-                    Query userCheck = ref.orderByChild("new-user").equalTo(emailAdd);
-                    userCheck.addValueEventListener(new ValueEventListener() {
+                    DatabaseReference ref = node.getReference("registration-data").child("user").child(userUid).child("userUid");
+                    ref.addValueEventListener(new ValueEventListener() {
                         @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(snapshot.exists()){
-                               String passwd = snapshot.child("password").getValue(PromoData.class).toString();
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.exists()) {
+                                email.setError(null);
+                                String regPass = dataSnapshot.child(PromoData.email).child("password").getValue(String.class);
 
-                                if (passwd.equals(PromoData.password)){
-                                    PromoData.firstname = snapshot.child("firstname").getValue().toString();
+                                if (regPass.equals(PromoData.password)) {
+                                    email.setError(null);
 
-                                    Intent intent = new Intent(getApplicationContext(), DisplayActivity.class);
-                                    intent.putExtra("registration-data", PromoData.firstname);
+                                    PromoData.firstname = dataSnapshot.child(PromoData.password).child("firstname").getValue(String.class);
+                                    PromoData.lastname = dataSnapshot.child(PromoData.password).child("lastname").getValue(String.class);
+
+                                    Intent intent = new Intent(Login.this, DisplayActivity.class);
+                                    intent.putExtra("lastname", PromoData.lastname);
+                                    intent.putExtra("firstname", PromoData.firstname);
                                     startActivity(intent);
                                 }
                             }
@@ -141,6 +144,12 @@ public class Login extends AppCompatActivity {
                         }
                     });
 
+
+                    Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Login.this, MainActivity.class);
+                    startActivity(intent);
+
+                    finish();
 
                 }
                 else {
@@ -159,8 +168,14 @@ public class Login extends AppCompatActivity {
                 }
 
             }
+            public void showFirstName() {
+
+
+            }
 
         });
     }
+
+
 
 }
