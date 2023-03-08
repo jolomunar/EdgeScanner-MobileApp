@@ -115,7 +115,7 @@
 
             <Spinner
                 android:id="@+id/outlet"
-                android:layout_width="279dp"
+                android:layout_width="270dp"
                 android:layout_height="48dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -127,7 +127,7 @@
 
             <Spinner
                 android:id="@+id/brand"
-                android:layout_width="178dp"
+                android:layout_width="270dp"
                 android:layout_height="48dp"
                 android:ems="10"
                 android:hint="Brand"
@@ -142,7 +142,7 @@
 
             <EditText
                 android:id="@+id/stockcode"
-                android:layout_width="174dp"
+                android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:ems="10"
                 android:hint="Stock Code"
@@ -157,7 +157,7 @@
 
             <Spinner
                 android:id="@+id/size"
-                android:layout_width="214dp"
+                android:layout_width="270dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Size"
@@ -170,21 +170,20 @@
                 app:layout_constraintVertical_bias="0.065"
                 tools:ignore="SpeakableTextPresentCheck" />
 
-            <EditText
+            <Spinner
                 android:id="@+id/color"
-                android:layout_width="wrap_content"
+                android:layout_width="270dp"
                 android:layout_height="48dp"
                 android:layout_marginTop="12dp"
                 android:ems="10"
-                android:hint="Color"
-                android:inputType="textPersonName"
                 android:minHeight="48dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.024"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/locationCode"
-                app:layout_constraintVertical_bias="0.011" />
+                app:layout_constraintVertical_bias="0.011"
+                tools:ignore="SpeakableTextPresentCheck" />
 
             <EditText
                 android:id="@+id/unitprice"

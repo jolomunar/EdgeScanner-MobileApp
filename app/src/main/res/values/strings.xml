@@ -22,11 +22,10 @@
         <item>Florsheim</item>
         <item>Saucony</item>
     </string-array>
-    
-    //Color
+
+
     <string-array name="color">
-        <item>Select Brand</item>
-        //BLACK-GUM
+        <item>Select Color</item>
         <item>BKGU-BLACK GUM - 6</item>
         <item>BKGU-BLACK GUM - 6X</item>
         <item>BKGU-BLACK GUM - 7</item>
@@ -44,7 +43,6 @@
         <item>BKGU-BLACK GUM - 13</item>
         <item>BKGU-BLACK GUM - 13X</item>
         <item>BKGU-BLACK GUM - 14</item>
-        //BLACK-WHITE
         <item>BKWH-BLACK/WHITE - 6</item>
         <item>BKWH-BLACK/WHITE - 6X</item>
         <item>BKWH-BLACK/WHITE - 7</item>
@@ -62,7 +60,6 @@
         <item>BKWH-BLACK/WHITE - 13</item>
         <item>BKWH-BLACK/WHITE - 13X</item>
         <item>BKWH-BLACK/WHITE - 14</item>
-        //Go-Glide
         <item>BKGU-BLACK GUM - 6</item>
         <item>BKGU-BLACK GUM - 6X</item>
         <item>BKGU-BLACK GUM - 7</item>

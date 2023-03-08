@@ -36,9 +36,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class Register extends AppCompatActivity {
 
-    EditText firstname, lastname, email, password, mobNum, empAge;
-    Spinner locationCode, empGen;
-    String first, sur, emailAdd, passwd, locCode, mobileNumber, gender, age;
+    EditText firstname, lastname, email, password, mobNum;
+    Spinner locationCode;
+    String first, sur, emailAdd, passwd, locCode, mobileNumber;
     Button register;
 
     FirebaseDatabase node = FirebaseDatabase.getInstance();
@@ -58,7 +58,6 @@ public class Register extends AppCompatActivity {
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
         mobNum= findViewById(R.id.mobNum);
-        empAge = findViewById(R.id.empAge);
 
         //Location Code Dropdown
         locationCode = findViewById(R.id.locationCode);
@@ -67,12 +66,6 @@ public class Register extends AppCompatActivity {
         outlet.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         locationCode.setAdapter(outlet);
 
-        //Gender Dropdown
-        empGen = findViewById(R.id.empGen);
-        ArrayAdapter<String> gender = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
-                getResources().getStringArray(R.array.empGen));
-        outlet.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        empGen.setAdapter(gender);
 
         beginOnClick();
 
@@ -91,8 +84,6 @@ public class Register extends AppCompatActivity {
                 passwd = password.getText().toString();
                 locCode = locationCode.getSelectedItem().toString();
                 mobileNumber = mobNum.getText().toString();
-                gender = empGen.getSelectedItem().toString();
-                age = empAge.getText().toString();
 
 
                 if (TextUtils.isEmpty(first)){
@@ -113,17 +104,13 @@ public class Register extends AppCompatActivity {
                 } else if (TextUtils.isEmpty(passwd) || passwd.length() < 8) {
                     password.setError("Password must contain at least 8 characters");
                     return;
-                } else if (TextUtils.isEmpty(age)) {
-                    empAge.setError("Please Enter Age");
-                    return;
                 } else {
-                    registerAccount(first, sur, emailAdd, passwd, locCode, mobileNumber, age, gender);
+                    registerAccount(first, sur, emailAdd, passwd, locCode, mobileNumber);
                 }
             }
         });
     }
-    public void registerAccount(String first, String sur, String emailAdd, String passwd, String locCode, String mobileNumber
-    , String age, String gender){
+    public void registerAccount(String first, String sur, String emailAdd, String passwd, String locCode, String mobileNumber){
 
 
 
@@ -153,8 +140,6 @@ public class Register extends AppCompatActivity {
                             promoMap.put("password", passwd);
                             promoMap.put("outlet", locCode);
                             promoMap.put("mobNum", mobileNumber);
-                            promoMap.put("empAge", age);
-                            promoMap.put("empGen", gender);
 
                             ref.child(userId).setValue(promoMap);
                         }

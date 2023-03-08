@@ -61,8 +61,8 @@ public class DisplayActivity extends AppCompatActivity {
     Button scanAgain;
     Button sendData;
     ListView listView;
-    EditText stockCode, unitPrice, color, tQuantity;
-    Spinner brand, size, outlet;
+    EditText stockCode, unitPrice, tQuantity;
+    Spinner brand, size, outlet, color;
     ArrayAdapter<String> arr;
 
     TextView textView2, textView3;
@@ -121,24 +121,31 @@ public class DisplayActivity extends AppCompatActivity {
 
         //Size Drop Down
         size = findViewById(R.id.size);
-        ArrayAdapter<String> shoeSize = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
+        ArrayAdapter<String> shoeSize = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
                 getResources().getStringArray(R.array.size));
         shoeSize.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         size.setAdapter(shoeSize);
 
         //Brand Drop Down
         brand = findViewById(R.id.brand);
-        ArrayAdapter<String> shoeBrand = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
+        ArrayAdapter<String> shoeBrand = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
                 getResources().getStringArray(R.array.brand));
         shoeBrand.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         brand.setAdapter(shoeBrand);
 
         //Outlet Drop Down
         outlet = findViewById(R.id.outlet);
-        ArrayAdapter<String> address = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
+        ArrayAdapter<String> address = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
                 getResources().getStringArray(R.array.outlet));
         address.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         outlet.setAdapter(address);
+
+        //Color Drop Down
+        color = findViewById(R.id.color);
+        ArrayAdapter<String> shoeColor = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
+                getResources().getStringArray(R.array.color));
+        shoeColor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        color.setAdapter(shoeColor);
     }
 
     public void getFirstName() {
@@ -191,7 +198,7 @@ public class DisplayActivity extends AppCompatActivity {
             public void onClick(View v) {
                 GlobalBarcode.stCode = stockCode.getText().toString();
                 GlobalBarcode.size = size.getSelectedItem().toString();
-                GlobalBarcode.color = color.getText().toString();
+                GlobalBarcode.color = color.getSelectedItem().toString();
                 GlobalBarcode.uPrice = unitPrice.getText().toString();
                 GlobalBarcode.totalQuantity = tQuantity.getText().toString();
                 GlobalBarcode.brand = brand.getSelectedItem().toString();
@@ -200,9 +207,9 @@ public class DisplayActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(GlobalBarcode.stCode)) {
                     stockCode.setError("This Field is Required");
                     return;
-                } else if (TextUtils.isEmpty(GlobalBarcode.color)) {
-                    color.setError("This Field is Required");
-                    return;
+//                } else if (TextUtils.isEmpty(GlobalBarcode.color)) {
+//                    color.setError("This Field is Required");
+//                    return;
                 } else if (TextUtils.isEmpty(GlobalBarcode.uPrice)) {
                     unitPrice.setError("This Field is Required");
                     return;
