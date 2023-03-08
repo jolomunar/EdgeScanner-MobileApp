@@ -22,6 +22,65 @@
         <item>Florsheim</item>
         <item>Saucony</item>
     </string-array>
+    
+    //Color
+    <string-array name="color">
+        <item>Select Brand</item>
+        //BLACK-GUM
+        <item>BKGU-BLACK GUM - 6</item>
+        <item>BKGU-BLACK GUM - 6X</item>
+        <item>BKGU-BLACK GUM - 7</item>
+        <item>BKGU-BLACK GUM - 7X</item>
+        <item>BKGU-BLACK GUM - 8</item>
+        <item>BKGU-BLACK GUM - 8X</item>
+        <item>BKGU-BLACK GUM - 9</item>
+        <item>BKGU-BLACK GUM - 9X</item>
+        <item>BKGU-BLACK GUM - 10</item>
+        <item>BKGU-BLACK GUM - 10X</item>
+        <item>BKGU-BLACK GUM - 11</item>
+        <item>BKGU-BLACK GUM - 11X</item>
+        <item>BKGU-BLACK GUM - 12</item>
+        <item>BKGU-BLACK GUM - 12X</item>
+        <item>BKGU-BLACK GUM - 13</item>
+        <item>BKGU-BLACK GUM - 13X</item>
+        <item>BKGU-BLACK GUM - 14</item>
+        //BLACK-WHITE
+        <item>BKWH-BLACK/WHITE - 6</item>
+        <item>BKWH-BLACK/WHITE - 6X</item>
+        <item>BKWH-BLACK/WHITE - 7</item>
+        <item>BKWH-BLACK/WHITE - 7X</item>
+        <item>BKWH-BLACK/WHITE - 8</item>
+        <item>BKWH-BLACK/WHITE - 8X</item>
+        <item>BKWH-BLACK/WHITE - 9</item>
+        <item>BKWH-BLACK/WHITE - 9X</item>
+        <item>BKWH-BLACK/WHITE - 10</item>
+        <item>BKWH-BLACK/WHITE - 10X</item>
+        <item>BKWH-BLACK/WHITE - 11</item>
+        <item>BKWH-BLACK/WHITE - 11X</item>
+        <item>BKWH-BLACK/WHITE - 12</item>
+        <item>BKWH-BLACK/WHITE - 12X</item>
+        <item>BKWH-BLACK/WHITE - 13</item>
+        <item>BKWH-BLACK/WHITE - 13X</item>
+        <item>BKWH-BLACK/WHITE - 14</item>
+        //Go-Glide
+        <item>BKGU-BLACK GUM - 6</item>
+        <item>BKGU-BLACK GUM - 6X</item>
+        <item>BKGU-BLACK GUM - 7</item>
+        <item>BKGU-BLACK GUM - 7X</item>
+        <item>BKGU-BLACK GUM - 8</item>
+        <item>BKGU-BLACK GUM - 8X</item>
+        <item>BKGU-BLACK GUM - 9</item>
+        <item>BKGU-BLACK GUM - 9X</item>
+        <item>BKGU-BLACK GUM - 10</item>
+        <item>BKGU-BLACK GUM - 10X</item>
+        <item>BKGU-BLACK GUM - 11</item>
+        <item>BKGU-BLACK GUM - 11X</item>
+        <item>BKGU-BLACK GUM - 12</item>
+        <item>BKGU-BLACK GUM - 12X</item>
+        <item>BKGU-BLACK GUM - 13</item>
+        <item>BKGU-BLACK GUM - 13X</item>
+        <item>BKGU-BLACK GUM - 14</item>
+    </string-array>
 
     <string-array name="size">
         <item>Select Size</item>
