@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -207,9 +208,30 @@ public class DisplayActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(GlobalBarcode.stCode)) {
                     stockCode.setError("This Field is Required");
                     return;
-//                } else if (TextUtils.isEmpty(GlobalBarcode.color)) {
-//                    color.setError("This Field is Required");
-//                    return;
+                } else if (outlet.getSelectedItem().toString().equals("Select Outlet")) {
+                    TextView errorText = (TextView)outlet.getSelectedView();
+                    errorText.setError("Please Select Outlet");
+                    errorText.setTextColor(Color.RED);
+                    errorText.setText("Select Outlet");
+                    return;
+                } else if (brand.getSelectedItem().toString().equals("Select Brand")) {
+                    TextView errorText = (TextView)brand.getSelectedView();
+                    errorText.setError("Please Select Brand");
+                    errorText.setTextColor(Color.RED);
+                    errorText.setText("Select Brand");
+                    return;
+                } else if (size.getSelectedItem().toString().equals("Select Size")) {
+                    TextView errorText = (TextView)size.getSelectedView();
+                    errorText.setError("Please Select Size");
+                    errorText.setTextColor(Color.RED);
+                    errorText.setText("Select Size");
+                    return;
+                } else if (color.getSelectedItem().toString().equals("Select Color")) {
+                    TextView errorText = (TextView)color.getSelectedView();
+                    errorText.setError("Please Select Color");
+                    errorText.setTextColor(Color.RED);
+                    errorText.setText("Select Color");
+                    return;
                 } else if (TextUtils.isEmpty(GlobalBarcode.uPrice)) {
                     unitPrice.setError("This Field is Required");
                     return;

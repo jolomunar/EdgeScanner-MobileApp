@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.util.Patterns;
 import android.view.View;
 import android.webkit.WebView;
@@ -21,6 +22,7 @@ import android.text.TextUtils;
 import android.content.Intent;
 import android.widget.Spinner;
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -103,6 +105,12 @@ public class Register extends AppCompatActivity {
                     return;
                 } else if (TextUtils.isEmpty(passwd) || passwd.length() < 8) {
                     password.setError("Password must contain at least 8 characters");
+                    return;
+                } else if (locationCode.getSelectedItem().toString().equals("Select Location Code")) {
+                    TextView errorText = (TextView)locationCode.getSelectedView();
+                    errorText.setError("");
+                    errorText.setTextColor(Color.RED);
+                    errorText.setText("Select Outlet");
                     return;
                 } else {
                     registerAccount(first, sur, emailAdd, passwd, locCode, mobileNumber);

@@ -506,10 +506,4 @@
         <item>Royal Sporting House - Cebu</item>
     </string-array>
 
-    <string-array name="empGen">
-        <item>Select Gender</item>
-        <item>Male</item>
-        <item>Female</item>
-    </string-array>
-
 </resources>
