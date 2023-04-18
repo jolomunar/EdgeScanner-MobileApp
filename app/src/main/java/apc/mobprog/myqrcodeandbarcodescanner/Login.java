@@ -129,10 +129,13 @@ public class Login extends AppCompatActivity {
 
                                     PromoData.firstname = dataSnapshot.child(PromoData.password).child("firstname").getValue(String.class);
                                     PromoData.lastname = dataSnapshot.child(PromoData.password).child("lastname").getValue(String.class);
+                                    PromoData.locationCode = dataSnapshot.child(PromoData.password).child("outlet").getValue(String.class);
+
 
                                     Intent intent = new Intent(Login.this, DisplayActivity.class);
                                     intent.putExtra("lastname", PromoData.lastname);
                                     intent.putExtra("firstname", PromoData.firstname);
+                                    intent.putExtra("outlet", PromoData.locationCode);
                                     startActivity(intent);
                                 }
                             }

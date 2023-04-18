@@ -5,7 +5,7 @@ public class PromoData {
     public static String lastname;
     public static String email;
     public static String password;
-    public String locationCode;
+    public static String locationCode;
     public String mobNum;
 
     public PromoData(String first, String sur, String emailAdd, String passwd, String locCode,

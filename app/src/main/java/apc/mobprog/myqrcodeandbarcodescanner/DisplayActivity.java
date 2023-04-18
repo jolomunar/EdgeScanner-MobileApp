@@ -62,23 +62,24 @@ public class DisplayActivity extends AppCompatActivity {
     Button scanAgain;
     Button sendData;
     ListView listView;
-    EditText stockCode, unitPrice, tQuantity;
-    Spinner brand, size, outlet, color;
+    EditText outlet, stockCode, unitPrice, tQuantity;
+    Spinner brand, size, color;
     ArrayAdapter<String> arr;
 
-    TextView textView2, textView3;
+    TextView textView2;
+    TextView textView;
 
     FirebaseDatabase node;
     DatabaseReference ref;
 
 
-    //   String esEndpoint = "https://edgescanner.herokuapp.com/api/ess-api/create";
+   String esEndpoint = "https://edgescanner.herokuapp.com/api/ess-api/create";
 //   String esEndpoint = "https://edgescanner.herokuapp.com/api/ess-api/create";
 //   String esEndpoint = "http://localhost:8000/api/ess-api/create";
 //   String esEndpoint = "https://eok6418nj8g0skh.m.pipedream.net";
 //   String esEndpoint = "https://e7bf9b6b00c727d40a25426a9ec5c20e.m.pipedream.net";
 //   String esEndpoint = "https://eotwyaq96coc31b.m.pipedream.net";
-   String esEndpoint = "https://edgescanner.myapc.edu.ph/api/ess-api/create";
+//   String esEndpoint = "https://edgescanner.myapc.edu.ph/api/ess-api/create";
 
     @SuppressLint({"WrongViewCast", "MissingInflatedId"})
     @Override
@@ -92,9 +93,10 @@ public class DisplayActivity extends AppCompatActivity {
         node = FirebaseDatabase.getInstance();
 
         getFirstName();
+        getItemInfo();
 
         textView2 = findViewById(R.id.textView2);
-        textView3 = findViewById(R.id.textView3);
+        textView = findViewById(R.id.textView);
 
         Intent intent = getIntent();
         GlobalBarcode.barcode = intent.getStringExtra("barcode_nr");
@@ -117,6 +119,7 @@ public class DisplayActivity extends AppCompatActivity {
         stockCode = findViewById(R.id.stockcode);
         unitPrice = findViewById(R.id.unitprice);
         tQuantity = findViewById(R.id.totalquantity);
+
         brand = findViewById(R.id.brand);
         color = findViewById(R.id.color);
 
@@ -125,9 +128,9 @@ public class DisplayActivity extends AppCompatActivity {
         ArrayAdapter<String> shoeSize = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
                 getResources().getStringArray(R.array.size));
         shoeSize.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        size.setAdapter(shoeSize);
+       size.setAdapter(shoeSize);
 
-        //Brand Drop Down
+//        //Brand Drop Down
         brand = findViewById(R.id.brand);
         ArrayAdapter<String> shoeBrand = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
                 getResources().getStringArray(R.array.brand));
@@ -135,11 +138,11 @@ public class DisplayActivity extends AppCompatActivity {
         brand.setAdapter(shoeBrand);
 
         //Outlet Drop Down
-        outlet = findViewById(R.id.outlet);
-        ArrayAdapter<String> address = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
-                getResources().getStringArray(R.array.outlet));
-        address.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        outlet.setAdapter(address);
+//        outlet = findViewById(R.id.outlet);
+//        ArrayAdapter<String> address = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
+//                getResources().getStringArray(R.array.outlet));
+//        address.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        outlet.setAdapter(address);
 
         //Color Drop Down
         color = findViewById(R.id.color);
@@ -159,11 +162,13 @@ public class DisplayActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 PromoData.firstname = dataSnapshot.child("firstname").getValue(String.class);
                 PromoData.lastname = dataSnapshot.child("lastname").getValue(String.class);
+                PromoData.locationCode = dataSnapshot.child("outlet").getValue(String.class);
                 Toast.makeText(DisplayActivity.this, "Promodiser logged in: " + PromoData.firstname
                                 + PromoData.lastname, Toast.LENGTH_LONG).show();
 
-                textView2.setText(PromoData.firstname);
-                textView3.setText(PromoData.lastname);
+                textView2.setText(PromoData.firstname+ " " + PromoData.lastname);
+                textView.setText(PromoData.locationCode);
+
 
             }
 
@@ -172,6 +177,31 @@ public class DisplayActivity extends AppCompatActivity {
                 System.out.println("The read failed: " + databaseError.getCode());
             }
         });
+    }
+
+    public void getItemInfo() {
+        ref = FirebaseDatabase.getInstance().getReference("item-master-list").child("item-data")
+                .child("brand");
+        ref.addValueEventListener(new ValueEventListener() {
+
+            String description;
+            String itemNum;
+
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                GlobalBarcode.size = snapshot.child("size-code").getValue(String.class);
+                GlobalBarcode.color = snapshot.child("color-code").getValue(String.class);
+                description = snapshot.child("description").getValue(String.class);
+                itemNum = snapshot.child("item-number").getValue(String.class);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+
+            }
+        });
+
     }
 
 //    public void showFirstName() {
@@ -203,16 +233,13 @@ public class DisplayActivity extends AppCompatActivity {
                 GlobalBarcode.uPrice = unitPrice.getText().toString();
                 GlobalBarcode.totalQuantity = tQuantity.getText().toString();
                 GlobalBarcode.brand = brand.getSelectedItem().toString();
-                GlobalBarcode.outlet = outlet.getSelectedItem().toString();
+                GlobalBarcode.outlet = outlet.getText().toString();
 
                 if (TextUtils.isEmpty(GlobalBarcode.stCode)) {
                     stockCode.setError("This Field is Required");
                     return;
-                } else if (outlet.getSelectedItem().toString().equals("Select Outlet")) {
-                    TextView errorText = (TextView)outlet.getSelectedView();
-                    errorText.setError("Please Select Outlet");
-                    errorText.setTextColor(Color.RED);
-                    errorText.setText("Select Outlet");
+                } else if (TextUtils.isEmpty(GlobalBarcode.outlet)) {
+                    outlet.setError("This Field is Required");
                     return;
                 } else if (brand.getSelectedItem().toString().equals("Select Brand")) {
                     TextView errorText = (TextView)brand.getSelectedView();

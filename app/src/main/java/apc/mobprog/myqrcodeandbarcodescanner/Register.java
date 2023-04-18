@@ -110,7 +110,7 @@ public class Register extends AppCompatActivity {
                     TextView errorText = (TextView)locationCode.getSelectedView();
                     errorText.setError("");
                     errorText.setTextColor(Color.RED);
-                    errorText.setText("Select Outlet");
+                    errorText.setText("Select Location Code");
                     return;
                 } else {
                     registerAccount(first, sur, emailAdd, passwd, locCode, mobileNumber);
