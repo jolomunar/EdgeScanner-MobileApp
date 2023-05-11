@@ -65,7 +65,7 @@ public class DisplayActivity extends AppCompatActivity {
     Button sendData;
     ListView listView;
     EditText unitPrice, tQuantity, remarks;
-    Spinner brand, outlet;
+    Spinner brand;
     ArrayAdapter<String> arr;
 
     TextView textView2;
@@ -140,11 +140,11 @@ public class DisplayActivity extends AppCompatActivity {
         shoeBrand.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         brand.setAdapter(shoeBrand);
 
-        outlet = findViewById(R.id.outlet);
-        ArrayAdapter<String> locCode= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
-                getResources().getStringArray(R.array.locationCode));
-        shoeBrand.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        outlet.setAdapter(locCode);
+//        outlet = findViewById(R.id.outlet);
+//        ArrayAdapter<String> locCode= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
+//                getResources().getStringArray(R.array.locationCode));
+//        shoeBrand.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        outlet.setAdapter(locCode);
     }
 
     public void getFirstName() {
@@ -157,12 +157,12 @@ public class DisplayActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 PromoData.firstname = dataSnapshot.child("firstname").getValue(String.class);
                 PromoData.lastname = dataSnapshot.child("lastname").getValue(String.class);
-//                PromoData.locationCode = dataSnapshot.child("outlet").getValue(String.class);
+                PromoData.locationCode = dataSnapshot.child("outlet").getValue(String.class);
 //                Toast.makeText(DisplayActivity.this, "Promodiser logged in: " + PromoData.firstname
 //                                + PromoData.lastname, Toast.LENGTH_LONG).show();
 
                 textView2.setText(PromoData.firstname+ " " + PromoData.lastname);
-//                textView.setText(PromoData.locationCode);
+                textView.setText(PromoData.locationCode);
 
 
             }
@@ -228,7 +228,7 @@ public class DisplayActivity extends AppCompatActivity {
                 GlobalBarcode.uPrice = unitPrice.getText().toString();
                 GlobalBarcode.totalQuantity = tQuantity.getText().toString();
                 GlobalBarcode.brand = brand.getSelectedItem().toString();
-                PromoData.locationCode = outlet.getSelectedItem().toString();
+//                PromoData.locationCode = outlet.getSelectedItem().toString();
 
                 if (TextUtils.isEmpty(GlobalBarcode.uPrice)) {
                     unitPrice.setError("This Field is Required");
@@ -242,12 +242,12 @@ public class DisplayActivity extends AppCompatActivity {
                     errorText.setTextColor(Color.RED);
                     errorText.setText("Select Brand");
                     return;
-                } else if (outlet.getSelectedItem().toString().equals("Select Location Code")) {
-                    TextView errorText = (TextView)outlet.getSelectedView();
-                    errorText.setError("Please Select Location Code");
-                    errorText.setTextColor(Color.RED);
-                    errorText.setText("Select Location Code");
-                    return;
+//                } else if (outlet.getSelectedItem().toString().equals("Select Location Code")) {
+//                    TextView errorText = (TextView)outlet.getSelectedView();
+//                    errorText.setError("Please Select Location Code");
+//                    errorText.setTextColor(Color.RED);
+//                    errorText.setText("Select Location Code");
+//                    return;
                 } else if (TextUtils.isEmpty(GlobalBarcode.totalQuantity)) {
                     tQuantity.setError("This Field is Required");
                     return;
