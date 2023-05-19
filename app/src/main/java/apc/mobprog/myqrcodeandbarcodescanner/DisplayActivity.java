@@ -10,12 +10,12 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.ListView;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.Button;
@@ -25,9 +25,6 @@ import android.app.ProgressDialog;
 import android.text.TextUtils;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.Query;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import android.content.Context;
@@ -38,7 +35,6 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.net.URL;
 import java.io.InputStreamReader;
@@ -48,7 +44,7 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONStringer;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -63,16 +59,18 @@ public class DisplayActivity extends AppCompatActivity {
     private static final String TAG = "";
     Button scanAgain;
     Button sendData;
-    ListView listView;
+    ExpandableListView listView;
+    ExpandableListViewAdapter newAdapter;
     EditText unitPrice, tQuantity, remarks;
     Spinner brand;
-    ArrayAdapter<String> arr;
+
+    HashMap<String, List<String>> info;
 
     TextView textView2;
     TextView textView;
-    TextView size;
-    TextView color;
-    TextView itemNumber;
+//    TextView size;
+//    TextView color;
+//    TextView itemNumber;
 
     FirebaseDatabase node;
     DatabaseReference ref, otherRef;
@@ -100,38 +98,28 @@ public class DisplayActivity extends AppCompatActivity {
         getFirstName();
         getItemInfo();
 
+
         textView2 = findViewById(R.id.textView2);
         textView = findViewById(R.id.textView);
-        itemNumber = findViewById(R.id.itemNumber);
-        size = findViewById(R.id.size);
-        color = findViewById(R.id.color);
+//        itemNumber = findViewById(R.id.itemNumber);
+//        size = findViewById(R.id.size);
+//        color = findViewById(R.id.color);
 
         Intent intent = getIntent();
         GlobalBarcode.barcode = intent.getStringExtra("barcode_nr");
-        listView = findViewById(R.id.sampleListView);
-        arr = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice,
-                GlobalBarcode.arrayList);
-        System.out.println(arr);
-        listView.setAdapter(arr);
 
 
-        Log.e(TAG, "55555  - RESULT : " + GlobalBarcode.barcode);
 
-
-        GlobalBarcode.arrayList.add(GlobalBarcode.barcode);
-        if (GlobalBarcode.arrayList.size() > 1) {
-            GlobalBarcode.arrayList.remove(0);
-        }
-        Log.e(TAG, "55555  - RESULT : " + GlobalBarcode.arrayList.toString());
+        listView = findViewById(R.id.sampleExpandableListView);
+        openList();
+        newAdapter = new ExpandableListViewAdapter(this, GlobalBarcode.arrayList, info);
+        listView.setAdapter(newAdapter);
 
         Toast.makeText(getApplicationContext(), GlobalBarcode.barcode, Toast.LENGTH_SHORT).show();
         beginOnClick();
 
         unitPrice = findViewById(R.id.unitprice);
         tQuantity = findViewById(R.id.totalquantity);
-
-//        brand = findViewById(R.id.brand);
-//        color = findViewById(R.id.color);
 
         //Brand Drop Down
         brand = findViewById(R.id.brand);
@@ -140,15 +128,30 @@ public class DisplayActivity extends AppCompatActivity {
         shoeBrand.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         brand.setAdapter(shoeBrand);
 
-//        outlet = findViewById(R.id.outlet);
-//        ArrayAdapter<String> locCode= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
-//                getResources().getStringArray(R.array.locationCode));
-//        shoeBrand.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        outlet.setAdapter(locCode);
+    }
+
+    public void openList() {
+
+        info = new HashMap<>();
+
+        GlobalBarcode.arrayList.add(GlobalBarcode.barcode);
+
+
+        for (String item : GlobalBarcode.arrayList) {
+            List<String> information = new ArrayList<>();
+            information.add("Size Code: " + GlobalBarcode.size);
+            information.add("Color Code: " + GlobalBarcode.color);
+            information.add("Item Number: " + GlobalBarcode.stCode);
+            info.put(item, information);
+        }
+
+        if (GlobalBarcode.arrayList.size() > 1) {
+            GlobalBarcode.arrayList.remove(0);
+        }
+
     }
 
     public void getFirstName() {
-        // Attach a listener to read the data at our posts reference
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         ref = FirebaseDatabase.getInstance().getReference("registration-data")
                 .child("user").child(userId);
@@ -158,8 +161,6 @@ public class DisplayActivity extends AppCompatActivity {
                 PromoData.firstname = dataSnapshot.child("firstname").getValue(String.class);
                 PromoData.lastname = dataSnapshot.child("lastname").getValue(String.class);
                 PromoData.locationCode = dataSnapshot.child("outlet").getValue(String.class);
-//                Toast.makeText(DisplayActivity.this, "Promodiser logged in: " + PromoData.firstname
-//                                + PromoData.lastname, Toast.LENGTH_LONG).show();
 
                 textView2.setText(PromoData.firstname+ " " + PromoData.lastname);
                 textView.setText(PromoData.locationCode);
@@ -176,25 +177,48 @@ public class DisplayActivity extends AppCompatActivity {
 
     public void getItemInfo() {
 
-        String current = FirebaseDatabase.getInstance().getReference("item-master-list").getKey();;
+        String current = FirebaseDatabase.getInstance().getReference("item-master-list").getKey();
         otherRef = FirebaseDatabase.getInstance().getReference().child(current);
         otherRef.orderByChild("barcode").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot newSnapshot : snapshot.getChildren()) {
-                    String barcode = newSnapshot.child("barcode-number").getValue(String.class);
-                    if (barcode.equals(GlobalBarcode.barcode)) {
-                        GlobalBarcode.size = newSnapshot.child("size-code").getValue(String.class);
-                        GlobalBarcode.color = newSnapshot.child("color-code").getValue(String.class);
-                        GlobalBarcode.stCode = newSnapshot.child("item-number").getValue(String.class);
 
-                        size.setText("Size Code: " + GlobalBarcode.size);
-                        color.setText("Color Code: " + GlobalBarcode.color);
-                        itemNumber.setText("Item Number: " + GlobalBarcode.stCode);
+                listView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+                    @Override
+                    public void onGroupExpand(int pos) {
 
-                        return;
+                        GlobalBarcode.barcode = (String) newAdapter.getGroup(pos);
+
+                        List<String> retrieve = GlobalBarcode.arrayList;
+
+                        for (DataSnapshot newSnapshot : snapshot.getChildren()) {
+                            String barcode = newSnapshot.child("barcode-number").getValue(String.class);
+                            if (barcode.equals(GlobalBarcode.barcode)) {
+                                GlobalBarcode.size = newSnapshot.child("size-code").getValue(String.class);
+                                GlobalBarcode.color = newSnapshot.child("color-code").getValue(String.class);
+                                GlobalBarcode.stCode = newSnapshot.child("item-number").getValue(String.class);
+
+                                Map<String, List<String>> info = new HashMap<>();
+
+                                for (String item : retrieve) {
+                                    List<String> information = new ArrayList<>();
+                                    information.add("Size Code: " + GlobalBarcode.size);
+                                    information.add("Color Code: " + GlobalBarcode.color);
+                                    information.add("Item Number: " + GlobalBarcode.stCode);
+                                    info.put(item, information);
+                                }
+                                newAdapter.setChildData(pos, info.get(GlobalBarcode.barcode));
+
+                                break;
+//                                size.setText("Size Code: " + GlobalBarcode.size);
+//                                color.setText("Color Code: " + GlobalBarcode.color);
+//                                itemNumber.setText("Item Code: " + GlobalBarcode.stCode);
+
+                            }
+                        }
+
                     }
-                }
+                });
 
             }
 
@@ -204,7 +228,6 @@ public class DisplayActivity extends AppCompatActivity {
             }
         });
     }
-
 
     public void beginOnClick() {
         scanAgain = findViewById(R.id.button2);
@@ -242,12 +265,6 @@ public class DisplayActivity extends AppCompatActivity {
                     errorText.setTextColor(Color.RED);
                     errorText.setText("Select Brand");
                     return;
-//                } else if (outlet.getSelectedItem().toString().equals("Select Location Code")) {
-//                    TextView errorText = (TextView)outlet.getSelectedView();
-//                    errorText.setError("Please Select Location Code");
-//                    errorText.setTextColor(Color.RED);
-//                    errorText.setText("Select Location Code");
-//                    return;
                 } else if (TextUtils.isEmpty(GlobalBarcode.totalQuantity)) {
                     tQuantity.setError("This Field is Required");
                     return;
@@ -276,10 +293,13 @@ public class DisplayActivity extends AppCompatActivity {
         IntentResult results = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
 
         GlobalBarcode.arrayList.add(results.getContents());
-        arr.notifyDataSetChanged();
+        newAdapter.notifyDataSetChanged();
+
+
         Toast.makeText(getApplicationContext(), results.getContents(), Toast.LENGTH_SHORT).show();
 
     }
+
 
     public class MyAsyncTasks extends AsyncTask<String, String, String> {
 

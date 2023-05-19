@@ -7,66 +7,30 @@
     tools:context=".DisplayActivity">
 
 
-    <TextView
-        android:id="@+id/promoInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="Promo Merchandiser Information:"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.081"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sampleListView" />
+    <!--    <Spinner-->
+    <!--        android:id="@+id/outlet"-->
+    <!--        android:layout_width="310dp"-->
+    <!--        android:layout_height="48dp"-->
+    <!--        android:ems="10"-->
+    <!--        android:hint="Select Location Code"-->
+    <!--        android:minHeight="48dp"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.158"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/textView2"-->
+    <!--        app:layout_constraintVertical_bias="0.015"-->
+    <!--        tools:ignore="SpeakableTextPresentCheck" />-->
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="176dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="204dp"
-        android:text="TextView"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.059"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="173dp"
-            android:layout_height="23dp"
-            android:layout_marginTop="232dp"
-            android:text="TextView"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.058"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-<!--    <Spinner-->
-<!--        android:id="@+id/outlet"-->
-<!--        android:layout_width="310dp"-->
-<!--        android:layout_height="48dp"-->
-<!--        android:ems="10"-->
-<!--        android:hint="Select Location Code"-->
-<!--        android:minHeight="48dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.158"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/textView2"-->
-<!--        app:layout_constraintVertical_bias="0.015"-->
-<!--        tools:ignore="SpeakableTextPresentCheck" />-->
 
     <Button
         android:id="@+id/button4"
         android:layout_width="152dp"
         android:layout_height="60dp"
-        android:layout_marginTop="620dp"
+        android:layout_marginTop="588dp"
         android:text="Send Data"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.903"
+        app:layout_constraintHorizontal_bias="0.907"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -74,134 +38,204 @@
         android:id="@+id/button2"
         android:layout_width="155dp"
         android:layout_height="60dp"
-        android:layout_marginTop="620dp"
+        android:layout_marginTop="588dp"
         android:text="Scan Again"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.074"
+        app:layout_constraintHorizontal_bias="0.093"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <ListView
-        android:id="@+id/sampleListView"
-        android:layout_width="383dp"
-        android:layout_height="151dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <ExpandableListView
+        android:id="@+id/sampleExpandableListView"
+        android:layout_width="363dp"
+        android:layout_height="197dp"
+        android:layoutDirection="rtl"
+        app:layout_constraintBottom_toTopOf="@+id/button2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.033"></ListView>
+        app:layout_constraintVertical_bias="0.033"></ExpandableListView>
 
-
-    <ScrollView
-        android:id="@+id/scrollView3"
-        android:layout_width="377dp"
-        android:layout_height="311dp"
-        android:layout_marginTop="20dp"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="367dp"
+        android:layout_height="195dp"
+        android:layout_marginTop="12dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/button2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.411"
+        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="0.05">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <Spinner
+            android:id="@+id/brand"
+            android:layout_width="178dp"
+            android:layout_height="48dp"
+            android:ems="10"
+            android:hint="Brand"
+            android:minHeight="48dp"
+            tools:ignore="SpeakableTextPresentCheck"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="360dp" />
+
+        <EditText
+            android:id="@+id/unitprice"
+            android:layout_width="178dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:ems="10"
+            android:hint="Unit Price"
+            android:inputType="number|text"
+            android:minHeight="48dp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="421dp" />
 
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Item Information:"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.055"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView" />
+        <EditText
+            android:id="@+id/totalquantity"
+            android:layout_width="179dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Total Quantity"
+            android:inputType="number"
+            android:minHeight="48dp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="481dp" />
 
-            <TextView
-                android:id="@+id/size"
-                android:layout_width="246dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="4dp"
-                android:text="TextView"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.096"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-            <TextView
-                android:id="@+id/color"
-                android:layout_width="307dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="12dp"
-                android:text="TextView"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.096"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/size" />
-
-            <TextView
-                android:id="@+id/itemNumber"
-                android:layout_width="246dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="12dp"
-                android:text="TextView"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.096"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/color" />
-
-            <Spinner
-                android:id="@+id/brand"
-                android:layout_width="178dp"
-                android:layout_height="48dp"
-                android:ems="10"
-                android:hint="Brand"
-                android:minHeight="48dp"
-                tools:ignore="SpeakableTextPresentCheck"
-                tools:layout_editor_absoluteX="10dp"
-                tools:layout_editor_absoluteY="265dp" />
+        <EditText
+            android:id="@+id/remarks"
+            android:layout_width="179dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Remarks"
+            android:minHeight="48dp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="544dp" />
 
 
-            <EditText
-                android:id="@+id/unitprice"
-                android:layout_width="156dp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Unit Price"
-                android:inputType="number|text"
-                android:minHeight="48dp"
-                tools:layout_editor_absoluteX="14dp"
-                tools:layout_editor_absoluteY="464dp" />
+    </LinearLayout>
 
-            <EditText
-                android:id="@+id/totalquantity"
-                android:layout_width="156dp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Total Quantity"
-                android:inputType="number"
-                android:minHeight="48dp"
-                tools:layout_editor_absoluteX="14dp"
-                tools:layout_editor_absoluteY="519dp" />
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="346dp"
+        android:layout_height="72dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/button4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sampleExpandableListView"
+        app:layout_constraintVertical_bias="0.0">
 
-            <EditText
-                android:id="@+id/remarks"
-                android:layout_width="155dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:ems="10"
-                android:hint="Remarks"
-                android:minHeight="48dp"
-                tools:layout_editor_absoluteX="10dp"
-                tools:layout_editor_absoluteY="265dp" />
+        <TextView
+            android:id="@+id/promoInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="User Information:"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/textView2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.055"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sampleExpandableListView"
+            app:layout_constraintVertical_bias="1.0" />
 
-        </LinearLayout>
-    </ScrollView>
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="176dp"
+            android:layout_height="20dp"
+            android:text="TextView"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/textView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.068"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sampleExpandableListView"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="176dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="TextView"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.067"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+    </LinearLayout>
+
+
+    <!--    <ScrollView-->
+    <!--        android:id="@+id/scrollView3"-->
+    <!--        android:layout_width="369dp"-->
+    <!--        android:layout_height="297dp"-->
+    <!--        android:layout_marginTop="12dp"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.404"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/textView">-->
+
+    <!--        <LinearLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:orientation="vertical">-->
+
+    <!--            <TextView-->
+    <!--                android:id="@+id/textView3"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginTop="20dp"-->
+    <!--                android:text="Item Information:"-->
+    <!--                android:textSize="16sp"-->
+    <!--                app:layout_constraintEnd_toEndOf="parent"-->
+    <!--                app:layout_constraintHorizontal_bias="0.055"-->
+    <!--                app:layout_constraintStart_toStartOf="parent"-->
+    <!--                app:layout_constraintTop_toBottomOf="@+id/textView" />-->
+
+    <!--            <TextView-->
+    <!--                android:id="@+id/size"-->
+    <!--                android:layout_width="246dp"-->
+    <!--                android:layout_height="24dp"-->
+    <!--                android:layout_marginTop="4dp"-->
+    <!--                android:text="TextView"-->
+    <!--                android:textSize="16sp"-->
+    <!--                app:layout_constraintEnd_toEndOf="parent"-->
+    <!--                app:layout_constraintHorizontal_bias="0.096"-->
+    <!--                app:layout_constraintStart_toStartOf="parent"-->
+    <!--                app:layout_constraintTop_toBottomOf="@+id/textView3" />-->
+
+    <!--            <TextView-->
+    <!--                android:id="@+id/color"-->
+    <!--                android:layout_width="307dp"-->
+    <!--                android:layout_height="24dp"-->
+    <!--                android:layout_marginTop="12dp"-->
+    <!--                android:text="TextView"-->
+    <!--                android:textSize="16sp"-->
+    <!--                app:layout_constraintEnd_toEndOf="parent"-->
+    <!--                app:layout_constraintHorizontal_bias="0.096"-->
+    <!--                app:layout_constraintStart_toStartOf="parent"-->
+    <!--                app:layout_constraintTop_toBottomOf="@+id/size" />-->
+
+    <!--            <TextView-->
+    <!--                android:id="@+id/itemNumber"-->
+    <!--                android:layout_width="246dp"-->
+    <!--                android:layout_height="24dp"-->
+    <!--                android:layout_marginTop="12dp"-->
+    <!--                android:text="TextView"-->
+    <!--                android:textSize="16sp"-->
+    <!--                app:layout_constraintEnd_toEndOf="parent"-->
+    <!--                app:layout_constraintHorizontal_bias="0.096"-->
+    <!--                app:layout_constraintStart_toStartOf="parent"-->
+    <!--                app:layout_constraintTop_toBottomOf="@+id/color" />-->
+
+    <!--        </LinearLayout>-->
+    <!--    </ScrollView>-->
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
