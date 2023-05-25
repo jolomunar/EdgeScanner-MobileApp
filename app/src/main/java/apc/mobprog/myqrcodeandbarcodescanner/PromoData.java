@@ -6,15 +6,15 @@ public class PromoData {
     public static String email;
     public static String password;
     public static String locationCode;
-    public String mobNum;
+    public static String userRole;
 
     public PromoData(String first, String sur, String emailAdd, String passwd, String locCode,
-                     String mobileNumber) {
+                     String uRole) {
         this.firstname = first;
         this.lastname = sur;
         this.email = emailAdd;
         this.password = passwd;
         this.locationCode = locCode;
-        this.mobNum = mobileNumber;
+        this.userRole = uRole;
     }
 }
