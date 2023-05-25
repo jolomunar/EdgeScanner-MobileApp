@@ -39,8 +39,8 @@ import com.google.firebase.database.FirebaseDatabase;
 public class Register extends AppCompatActivity {
 
     EditText firstname, lastname, email, password, mobNum;
-    Spinner locationCode;
-    String first, sur, emailAdd, passwd, locCode, mobileNumber;
+    Spinner locationCode, role;
+    String first, sur, emailAdd, passwd, locCode, uRole;
     Button register;
 
     FirebaseDatabase node = FirebaseDatabase.getInstance();
@@ -59,7 +59,7 @@ public class Register extends AppCompatActivity {
         lastname = findViewById(R.id.lastname);
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
-        mobNum= findViewById(R.id.mobNum);
+        role = findViewById(R.id.role);
 
         //Location Code Dropdown
         locationCode = findViewById(R.id.locationCode);
@@ -68,6 +68,12 @@ public class Register extends AppCompatActivity {
         outlet.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         locationCode.setAdapter(outlet);
 
+        //User Role Code Dropdown
+        role = findViewById(R.id.role);
+        ArrayAdapter<String> userRole = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,
+                getResources().getStringArray(R.array.role));
+        userRole.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        role.setAdapter(userRole);
 
         beginOnClick();
 
@@ -85,8 +91,13 @@ public class Register extends AppCompatActivity {
                 emailAdd = email.getText().toString();
                 passwd = password.getText().toString();
                 locCode = locationCode.getSelectedItem().toString();
-                mobileNumber = mobNum.getText().toString();
+                uRole = role.getSelectedItem().toString();
 
+                if (role.getSelectedItem().toString().equals("Team Leader")) {
+                    Intent intent = new Intent(Register.this, LeaderPrivacyPolicy.class);
+                    startActivity(intent);
+                    finish();
+                }
 
                 if (TextUtils.isEmpty(first)){
                     firstname.setError("Please Enter First Name");
@@ -94,8 +105,11 @@ public class Register extends AppCompatActivity {
                 } else if (TextUtils.isEmpty(sur)) {
                     lastname.setError("Please Enter Last Name");
                     return;
-                } else if (TextUtils.isEmpty(mobileNumber)) {
-                    mobNum.setError("Please Enter Mobile Number");
+                } else if (role.getSelectedItem().toString().equals("Select Role")) {
+                    TextView errorText = (TextView)role.getSelectedView();
+                    errorText.setError("");
+                    errorText.setTextColor(Color.RED);
+                    errorText.setText("Select Role");
                     return;
                 } else if (TextUtils.isEmpty(emailAdd)) {
                     email.setError("Please Enter Email");
@@ -107,18 +121,18 @@ public class Register extends AppCompatActivity {
                     password.setError("Password must contain at least 8 characters");
                     return;
                 } else if (locationCode.getSelectedItem().toString().equals("Select Location Code")) {
-                    TextView errorText = (TextView)locationCode.getSelectedView();
+                    TextView errorText = (TextView) locationCode.getSelectedView();
                     errorText.setError("");
                     errorText.setTextColor(Color.RED);
                     errorText.setText("Select Location Code");
                     return;
                 } else {
-                    registerAccount(first, sur, emailAdd, passwd, locCode, mobileNumber);
+                    registerAccount(first, sur, emailAdd, passwd, locCode, uRole);
                 }
             }
         });
     }
-    public void registerAccount(String first, String sur, String emailAdd, String passwd, String locCode, String mobileNumber){
+    public void registerAccount(String first, String sur, String emailAdd, String passwd, String locCode, String role){
 
 
 
@@ -136,6 +150,7 @@ public class Register extends AppCompatActivity {
                             String userId = user.getUid();
                             ref = node.getReference("registration-data").child("user");
 
+
                             Intent intent = new Intent(Register.this, PrivacyPolicy.class);
                             startActivity(intent);
                             finish();
@@ -147,7 +162,7 @@ public class Register extends AppCompatActivity {
                             promoMap.put("email", emailAdd);
                             promoMap.put("password", passwd);
                             promoMap.put("outlet", locCode);
-                            promoMap.put("mobNum", mobileNumber);
+                            promoMap.put("userRole", role);
 
                             ref.child(userId).setValue(promoMap);
                         }

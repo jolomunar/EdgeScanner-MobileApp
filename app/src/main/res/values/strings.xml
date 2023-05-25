@@ -304,6 +304,12 @@
         <item>15-0139 - Royal Sporting House - Cebu</item>
     </string-array>
 
+    <string-array name="role">
+        <item>Select Role</item>
+        <item>Promo Merchandiser</item>
+        <item>Team Leader</item>
+    </string-array>
+
     //outlet
     <string-array name="outlet">
         <item>Select Outlet</item>

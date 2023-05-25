@@ -124,6 +124,7 @@ public class Login extends AppCompatActivity {
                                 email.setError(null);
                                 String regPass = dataSnapshot.child(PromoData.email).child("password").getValue(String.class);
 
+
                                 if (regPass.equals(PromoData.password)) {
                                     email.setError(null);
 
@@ -171,11 +172,6 @@ public class Login extends AppCompatActivity {
                 }
 
             }
-            public void showFirstName() {
-
-
-            }
-
         });
     }
 

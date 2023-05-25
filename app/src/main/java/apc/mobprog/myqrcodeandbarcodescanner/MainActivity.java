@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
 
         private TextView textView;
         TextView verifyMsg;
-        Button verifyEmailBtn;
         FirebaseAuth auth;
 
         @Override
@@ -36,14 +35,12 @@ public class MainActivity extends AppCompatActivity {
 
             auth = FirebaseAuth.getInstance();
             verifyMsg = findViewById(R.id.verifyEmailMsg);
-            verifyEmailBtn = findViewById(R.id.verifyEmailBtn);
 
             if(auth.getCurrentUser().isEmailVerified()){
-                verifyEmailBtn.setVisibility(View.VISIBLE);
                 verifyMsg.setVisibility(View.VISIBLE);
             }
 
-            verifyEmailBtn.setOnClickListener(new View.OnClickListener() {
+            verifyMsg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     //send verification link
@@ -51,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void unused) {
                             Toast.makeText(MainActivity.this, "Verification Link Email Sent", Toast.LENGTH_SHORT).show();
-                            verifyEmailBtn.setVisibility(View.GONE);
                             verifyMsg.setVisibility(View.GONE);
 
                         }
