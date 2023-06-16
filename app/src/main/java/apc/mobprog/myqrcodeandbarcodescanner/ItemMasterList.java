@@ -59,43 +59,44 @@ public class ItemMasterList extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
-                        Log.i("ItemMasterList", "bcMasterList: " + bcMasterList);
-                        Log.i("ItemMasterList", "infoMasterList: " + infoMasterList);
                         try {
                             JSONArray jsonArray = new JSONArray(response);
 
-                            Log.i(TAG, "Respond" + response);
-
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                GlobalBarcode.barcode = jsonObject.getString("group_item");
+                                GlobalBarcode.barcode = jsonObject.getString("barcode_number");
+                                GlobalBarcode.size = jsonObject.getString("size_code");
+                                GlobalBarcode.color = jsonObject.getString("color_code");
+                                GlobalBarcode.stCode = jsonObject.getString("item_number");
+                                // Retrieve other properties as needed
+
+                                // Add the retrieved data to your data structures
                                 bcMasterList.add(GlobalBarcode.barcode);
-                                Log.i("ItemMasterList", "Group Item: " + GlobalBarcode.barcode);
-
-                                JSONArray childArray = jsonObject.getJSONArray("child_items");
                                 List<String> childItems = new ArrayList<>();
-
-                                for (int j = 0; j < childArray.length(); j++) {
-                                    String childItem = childArray.getString(j);
-                                    childItems.add(childItem);
-                                    Log.i("ItemMasterList", "Child Items: " + childItems);
-                                }
-
+                                childItems.add("Size Code: " + GlobalBarcode.size);
+                                childItems.add("Color Code: " + GlobalBarcode.color);
+                                childItems.add("Item Number: " + GlobalBarcode.stCode);
                                 infoMasterList.put(GlobalBarcode.barcode, childItems);
                             }
 
-                            imListAdapter.notifyDataSetChanged();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    imListAdapter.notifyDataSetChanged();
+                                }
+                            });
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        }) {
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                }
+        ) {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
@@ -105,7 +106,6 @@ public class ItemMasterList extends AppCompatActivity {
         };
 
         queue.add(stringRequest);
-        queue.start();
     }
 
     @Override
