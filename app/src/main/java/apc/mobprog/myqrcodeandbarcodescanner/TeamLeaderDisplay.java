@@ -288,6 +288,7 @@ public class TeamLeaderDisplay extends AppCompatActivity {
             }
 
             Intent intent = new Intent(TeamLeaderDisplay.this, DataStorageTL.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
         }
     }

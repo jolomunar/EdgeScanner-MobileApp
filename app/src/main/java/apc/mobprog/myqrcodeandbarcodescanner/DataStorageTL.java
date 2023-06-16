@@ -211,6 +211,7 @@ public class DataStorageTL extends AppCompatActivity {
             // Start the display activity and pass the scanned barcode
             Intent intent = new Intent(this, TeamLeaderDisplay.class);
             intent.putExtra("barcode_nr", scannedBarcode);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
         }
         Log.i(TAG, "Expandable Information" + bcin);
@@ -274,94 +275,5 @@ public class DataStorageTL extends AppCompatActivity {
         };
         requestQueue.add(stringRequest);
     }
-//    private void sendDataToEndpoint() {
-//
-//        final ProgressDialog pD = new ProgressDialog(DataStorage.this);
-//        pD.setMessage("Processing Results...");
-//        pD.setCancelable(false);
-//        pD.show();
-//
-//        RequestQueue requestQueue = Volley.newRequestQueue(this);
-//        StringRequest stringRequest = new StringRequest(Request.Method.POST, esEndpoint,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//
-//                        try {
-//                            JSONArray ja = new JSONArray(response);
-////                            for (int i = 0; i < ja.length(); i++) {
-////                                JSONObject item = ja.getJSONObject(i);
-////                                item.put("barcode_number: ", barcodeList);
-////                                item.put("size: ", size);
-////                                item.put("color: ", color);
-////                                item.put("stock_code: ", stCode);
-////                                item.put("brand", brand );
-////                                item.put("unit_price: ", unitPrice);
-////                                item.put("total_quantity: ", quantity);
-////                                item.put("remarks: ", remarks);
-////                                item.put("firstname: ", fName);
-////                                item.put("lastname: ", lName);
-////                                item.put("outlet: ", locCode);
-////                            }
-//                            Log.i(TAG, "Panalo" + ja.toString());
-//
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//
-//                        Toast.makeText(DataStorage.this, "Successfully inserted the data", Toast.LENGTH_SHORT).show();
-//                        pD.dismiss();
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        // Handle the error response
-//                        Toast.makeText(DataStorage.this, "Failed to send the data", Toast.LENGTH_SHORT).show();
-//                    }
-//                }) {
-//            @Override
-//            protected Map<String, String> getParams() {
-//                // Define the parameters to be sent in the POST request
-//                Map<String, String> params = new HashMap<>();
-//
-//                // Create an array of JSON objects
-//                JSONArray itemsArray = new JSONArray();
-//
-//                // Iterate through your data list and create a JSON object for each item
-//                JSONArray ja = barcodeStorage.getList();
-//                for (int i = 0; i < ja.length(); i++) {
-//                    JSONObject jo = null;
-//                    try {
-//                        jo = ja.getJSONObject(i);
-//                        JSONObject itemObject = new JSONObject();
-//
-//                        // Add the item data to the JSON object
-//                        itemObject.put("firstname", jo.getString("firstname"));
-//                        itemObject.put("lastname", jo.getString("lastname"));
-//                        itemObject.put("barcode_number", jo.getString("barcode"));
-//                        itemObject.put("stock_code", jo.getString("stCode"));
-//                        itemObject.put("color", jo.getString("color"));
-//                        itemObject.put("size", jo.getString("size"));
-//                        itemObject.put("unit_price", jo.getString("unitPrice"));
-//                        itemObject.put("total_quantity", jo.getString("quantity"));
-//                        itemObject.put("brand", jo.getString("brand"));
-//                        itemObject.put("outlet", jo.getString("locationCode"));
-//                        itemObject.put("remarks", jo.getString("remarks_age_gender"));
-//
-//                        // Add the JSON object to the items array
-//                        itemsArray.put(itemObject);
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//
-//                // Add the items array to the params map
-//                params.put("items", itemsArray.toString());
-//
-//                return params;
-//            }
-//        };
-//        requestQueue.add(stringRequest);
-//    }
+
 }

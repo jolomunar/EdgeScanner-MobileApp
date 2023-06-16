@@ -277,6 +277,7 @@ public class DisplayActivity extends AppCompatActivity {
             }
 
             Intent intent = new Intent(DisplayActivity.this, DataStorage.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
         }
     }
