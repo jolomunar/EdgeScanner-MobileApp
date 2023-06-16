@@ -3,6 +3,7 @@ package apc.mobprog.myqrcodeandbarcodescanner;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
             IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
             Intent intent = new Intent(this, DisplayActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_SINGLE_TOP);
             intent.putExtra("barcode_nr", intentResult.getContents());
             startActivity(intent);
         }

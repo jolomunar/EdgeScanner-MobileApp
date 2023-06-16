@@ -12,4 +12,5 @@ public class GlobalBarcode {
     public static String totalQuantity;
     public static String brand;
     public static String remarksAgeGender;
+
 }

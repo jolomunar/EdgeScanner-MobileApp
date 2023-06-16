@@ -3,6 +3,7 @@ package apc.mobprog.myqrcodeandbarcodescanner;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -30,6 +31,9 @@ public class TeamLeaderActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SharedPreferences preferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        PromoData.userRole = preferences.getString("UserRole", "");
 
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -69,7 +73,7 @@ public class TeamLeaderActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        Intent intent = new Intent(this, DisplayActivity.class);
+        Intent intent = new Intent(this, TeamLeaderDisplay.class);
         intent.putExtra("barcode_nr", intentResult.getContents());
         startActivity(intent);
     }

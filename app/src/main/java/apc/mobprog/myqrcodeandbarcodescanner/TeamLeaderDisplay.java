@@ -36,7 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DisplayActivity extends AppCompatActivity {
+public class TeamLeaderDisplay extends AppCompatActivity {
 
     private static final String TAG = "";
     Button dataStorage;
@@ -50,6 +50,7 @@ public class DisplayActivity extends AppCompatActivity {
 
     TextView textView2;
     TextView textView;
+    TextView masterList;
 
     FirebaseDatabase node;
     DatabaseReference ref;
@@ -60,8 +61,9 @@ public class DisplayActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_display);
+        setContentView(R.layout.activity_team_leader_display);
 
+        masterList = findViewById(R.id.masterTextView);
         info_barcodes = new HashMap<>();
         info = new HashMap<>();
 
@@ -88,7 +90,7 @@ public class DisplayActivity extends AppCompatActivity {
 
         openList();
 
-        Toast.makeText(DisplayActivity.this, GlobalBarcode.barcode, Toast.LENGTH_SHORT).show();
+        Toast.makeText(TeamLeaderDisplay.this, GlobalBarcode.barcode, Toast.LENGTH_SHORT).show();
         beginOnClick();
 
         unitPrice = findViewById(R.id.unitprice);
@@ -143,7 +145,7 @@ public class DisplayActivity extends AppCompatActivity {
                 PromoData.lastname = dataSnapshot.child("lastname").getValue(String.class);
                 PromoData.locationCode = dataSnapshot.child("outlet").getValue(String.class);
 
-                textView2.setText(PromoData.firstname + " " + PromoData.lastname);
+                textView2.setText(PromoData.firstname+ " " + PromoData.lastname);
                 textView.setText(PromoData.locationCode);
 
             }
@@ -171,15 +173,15 @@ public class DisplayActivity extends AppCompatActivity {
                             GlobalBarcode.color = jo.getString("color_code");
                             GlobalBarcode.stCode = jo.getString("item_number");
 
-                                // Update child data for the barcode
-                                int groupPosition = findGroupPosition(newAdapter, GlobalBarcode.barcode);
-                                if (groupPosition != -1) {
-                                    List<String> information = new ArrayList<>();
-                                    information.add("Size Code: " + GlobalBarcode.size);
-                                    information.add("Color Code: " + GlobalBarcode.color);
-                                    information.add("Item Number: " + GlobalBarcode.stCode);
-                                    newAdapter.setChildData(groupPosition, information);
-                                }
+                            // Update child data for the barcode
+                            int groupPosition = findGroupPosition(newAdapter, GlobalBarcode.barcode);
+                            if (groupPosition != -1) {
+                                List<String> information = new ArrayList<>();
+                                information.add("Size Code: " + GlobalBarcode.size);
+                                information.add("Color Code: " + GlobalBarcode.color);
+                                information.add("Item Number: " + GlobalBarcode.stCode);
+                                newAdapter.setChildData(groupPosition, information);
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -215,6 +217,16 @@ public class DisplayActivity extends AppCompatActivity {
     public void beginOnClick() {
         dataStorage = findViewById(R.id.button7);
 
+        masterList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(TeamLeaderDisplay.this, ItemMasterList.class);
+                startActivity(intent);
+
+                Log.e(TAG, "77777 - RESULT" + masterList);
+            }
+        });
+
         dataStorage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -222,7 +234,6 @@ public class DisplayActivity extends AppCompatActivity {
             }
         });
     }
-
     public void dataStorage() {
 
         remarks = findViewById(R.id.remarks);
@@ -276,7 +287,7 @@ public class DisplayActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            Intent intent = new Intent(DisplayActivity.this, DataStorage.class);
+            Intent intent = new Intent(TeamLeaderDisplay.this, DataStorageTL.class);
             startActivity(intent);
         }
     }

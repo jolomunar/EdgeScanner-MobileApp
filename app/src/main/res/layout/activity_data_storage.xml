@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DataStorage">
+
+
+    <Button
+        android:id="@+id/button8"
+        android:layout_width="218dp"
+        android:layout_height="65dp"
+        android:layout_marginBottom="16dp"
+        android:text="Scan Again"
+        android:textColor="#FFFF"
+        app:layout_constraintBottom_toTopOf="@+id/button5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dataStorageView"
+        app:layout_constraintVertical_bias="0.95" />
+
+    <ExpandableListView
+        android:id="@+id/dataStorageView"
+        android:layout_width="370dp"
+        android:layout_height="512dp"
+        android:layoutDirection="rtl"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.073">
+
+    </ExpandableListView>
+
+    <ProgressBar
+        android:id="@+id/idPBLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/black"
+        android:visibility="gone"
+        tools:ignore="MissingConstraints"/>
+
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="308dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="32dp"
+        android:text="Send Data"
+        android:textColor="#FFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

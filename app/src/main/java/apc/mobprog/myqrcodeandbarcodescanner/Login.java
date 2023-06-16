@@ -2,6 +2,8 @@ package apc.mobprog.myqrcodeandbarcodescanner;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.util.Patterns;
 import android.util.Log;
@@ -107,8 +109,6 @@ public class Login extends AppCompatActivity {
         mAuth.signInWithEmailAndPassword(emailAdd, passwd).addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-
-
                 if (task.isSuccessful()) {
                     FirebaseUser newUser = mAuth.getCurrentUser();
                     String userUid = newUser.getUid();
@@ -116,29 +116,39 @@ public class Login extends AppCompatActivity {
                     PromoData.email = email.getText().toString().trim();
                     PromoData.password = password.getText().toString().trim();
 
-                    DatabaseReference ref = node.getReference("registration-data").child("user").child(userUid).child("userUid");
+                    DatabaseReference ref = node.getReference("registration-data").child("user").child(userUid);
                     ref.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.exists()) {
+                            if (dataSnapshot.exists()) {
                                 email.setError(null);
-                                String regPass = dataSnapshot.child(PromoData.email).child("password").getValue(String.class);
+                                String regPass = dataSnapshot.child("password").getValue(String.class);
 
-
-                                if (regPass.equals(PromoData.password)) {
+                                if (regPass != null && regPass.equals(PromoData.password)) {
                                     email.setError(null);
 
-                                    PromoData.firstname = dataSnapshot.child(PromoData.password).child("firstname").getValue(String.class);
-                                    PromoData.lastname = dataSnapshot.child(PromoData.password).child("lastname").getValue(String.class);
-                                    PromoData.locationCode = dataSnapshot.child(PromoData.password).child("outlet").getValue(String.class);
-
-
-                                    Intent intent = new Intent(Login.this, DisplayActivity.class);
-                                    intent.putExtra("lastname", PromoData.lastname);
-                                    intent.putExtra("firstname", PromoData.firstname);
-                                    intent.putExtra("outlet", PromoData.locationCode);
-                                    startActivity(intent);
+                                    PromoData.firstname = dataSnapshot.child("firstname").getValue(String.class);
+                                    PromoData.lastname = dataSnapshot.child("lastname").getValue(String.class);
+                                    PromoData.locationCode = dataSnapshot.child("outlet").getValue(String.class);
+                                    PromoData.userRole = dataSnapshot.child("userRole").getValue(String.class);
                                 }
+                            }
+
+                            // Check user role and perform redirection
+                            if (PromoData.userRole != null) {
+                                if (PromoData.userRole.equals("Team Leader")) {
+                                    Intent intent = new Intent(Login.this, TeamLeaderActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                } else if (PromoData.userRole.equals("Promo Merchandiser")) {
+                                    Intent intent = new Intent(Login.this, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    Toast.makeText(Login.this, "Unknown user role", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(Login.this, "User role not defined", Toast.LENGTH_SHORT).show();
                             }
                         }
 
@@ -148,29 +158,21 @@ public class Login extends AppCompatActivity {
                         }
                     });
 
-
                     Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(Login.this, MainActivity.class);
-                    startActivity(intent);
-
-                    finish();
-
-                }
-                else {
+                } else {
                     try {
                         throw task.getException();
-                    } catch(FirebaseAuthInvalidUserException e) {
+                    } catch (FirebaseAuthInvalidUserException e) {
                         email.setError("User Invalid or Non-existent");
                         email.requestFocus();
-                    } catch(FirebaseAuthInvalidCredentialsException e) {
+                    } catch (FirebaseAuthInvalidCredentialsException e) {
                         password.setError("Incorrect Password");
                         password.requestFocus();
-                    } catch(Exception e) {
+                    } catch (Exception e) {
                         Log.e(TAG, e.getMessage());
                         Toast.makeText(Login.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
-
             }
         });
     }

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.util.Patterns;
@@ -39,7 +40,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class Register extends AppCompatActivity {
 
     EditText firstname, lastname, email, password, mobNum;
-    Spinner locationCode, role;
+    Spinner locationCode, roleSpinner;
     String first, sur, emailAdd, passwd, locCode, uRole;
     Button register;
 
@@ -55,11 +56,13 @@ public class Register extends AppCompatActivity {
 
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+
         firstname = findViewById(R.id.firstname);
         lastname = findViewById(R.id.lastname);
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
-        role = findViewById(R.id.role);
+        locationCode = findViewById(R.id.locationCode);
+        roleSpinner = findViewById(R.id.role);
 
         //Location Code Dropdown
         locationCode = findViewById(R.id.locationCode);
@@ -69,94 +72,83 @@ public class Register extends AppCompatActivity {
         locationCode.setAdapter(outlet);
 
         //User Role Code Dropdown
-        role = findViewById(R.id.role);
+        roleSpinner = findViewById(R.id.role);
         ArrayAdapter<String> userRole = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,
                 getResources().getStringArray(R.array.role));
         userRole.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        role.setAdapter(userRole);
+        roleSpinner.setAdapter(userRole);
 
         beginOnClick();
 
 
     }
     public void beginOnClick() {
-
         register = findViewById(R.id.button6);
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 first = firstname.getText().toString();
                 sur = lastname.getText().toString();
                 emailAdd = email.getText().toString();
                 passwd = password.getText().toString();
                 locCode = locationCode.getSelectedItem().toString();
-                uRole = role.getSelectedItem().toString();
+                uRole = roleSpinner.getSelectedItem().toString();
 
-                if (role.getSelectedItem().toString().equals("Team Leader")) {
-                    Intent intent = new Intent(Register.this, LeaderPrivacyPolicy.class);
-                    startActivity(intent);
-                    finish();
-                }
-
-                if (TextUtils.isEmpty(first)){
-                    firstname.setError("Please Enter First Name");
+                if (TextUtils.isEmpty(first)) {
+                    firstname.setError("Please enter First Name");
                     return;
                 } else if (TextUtils.isEmpty(sur)) {
-                    lastname.setError("Please Enter Last Name");
+                    lastname.setError("Please enter Last Name");
                     return;
-                } else if (role.getSelectedItem().toString().equals("Select Role")) {
-                    TextView errorText = (TextView)role.getSelectedView();
-                    errorText.setError("");
-                    errorText.setTextColor(Color.RED);
-                    errorText.setText("Select Role");
+                } else if (uRole.equals("Select Role")) {
+                    Toast.makeText(Register.this, "Please select a role", Toast.LENGTH_SHORT).show();
                     return;
                 } else if (TextUtils.isEmpty(emailAdd)) {
-                    email.setError("Please Enter Email");
+                    email.setError("Please enter Email");
                     return;
                 } else if (!Patterns.EMAIL_ADDRESS.matcher(emailAdd).matches()) {
-                    email.setError("Email is Invalid");
+                    email.setError("Email is invalid");
                     return;
                 } else if (TextUtils.isEmpty(passwd) || passwd.length() < 8) {
                     password.setError("Password must contain at least 8 characters");
                     return;
-                } else if (locationCode.getSelectedItem().toString().equals("Select Location Code")) {
-                    TextView errorText = (TextView) locationCode.getSelectedView();
-                    errorText.setError("");
-                    errorText.setTextColor(Color.RED);
-                    errorText.setText("Select Location Code");
+                } else if (locCode.equals("Select Location Code")) {
+                    Toast.makeText(Register.this, "Please select a location code", Toast.LENGTH_SHORT).show();
                     return;
-                } else {
-                    registerAccount(first, sur, emailAdd, passwd, locCode, uRole);
                 }
+
+                registerAccount(first, sur, emailAdd, passwd, locCode, uRole);
             }
         });
     }
-    public void registerAccount(String first, String sur, String emailAdd, String passwd, String locCode, String role){
 
-
-
+    private void registerAccount(String first, String sur, String emailAdd, String passwd, String locCode, String role) {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         auth.createUserWithEmailAndPassword(emailAdd, passwd).addOnCompleteListener(Register.this,
                 new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
-                        if(task.isSuccessful()) {
-
-
+                        if (task.isSuccessful()) {
+                            // Account registered successfully
                             Toast.makeText(Register.this, "Account Registered", Toast.LENGTH_LONG).show();
-                            FirebaseUser user= auth.getCurrentUser();
+                            FirebaseUser user = auth.getCurrentUser();
                             String userId = user.getUid();
                             ref = node.getReference("registration-data").child("user");
 
-
-                            Intent intent = new Intent(Register.this, PrivacyPolicy.class);
+                            Intent intent;
+                            if (role.equals("Team Leader")) {
+                                // Redirect to Team Leader activities
+                                intent = new Intent(Register.this, LeaderPrivacyPolicy.class);
+                            } else {
+                                // Redirect to regular user activities
+                                intent = new Intent(Register.this, PrivacyPolicy.class);
+                            }
+                            intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             startActivity(intent);
                             finish();
 
-                            HashMap<String , String> promoMap = new HashMap<>();
-
+                            HashMap<String, String> promoMap = new HashMap<>();
                             promoMap.put("firstname", first);
                             promoMap.put("lastname", sur);
                             promoMap.put("email", emailAdd);
@@ -165,20 +157,13 @@ public class Register extends AppCompatActivity {
                             promoMap.put("userRole", role);
 
                             ref.child(userId).setValue(promoMap);
-                        }
-                        else {
+                        } else {
                             try {
                                 throw task.getException();
                             } catch (FirebaseAuthUserCollisionException e) {
-                                email.setError("Email already existing");
+                                email.setError("Email already exists");
                                 email.requestFocus();
-                                mobNum.setError("Mobile number is already taken");
-                                mobNum.requestFocus();
-                                firstname.setError("First Name is already taken");
-                                firstname.requestFocus();
-                                lastname.setError("Last Name is already taken");
-                                lastname.requestFocus();
-                            }  catch (Exception e) {
+                            } catch (Exception e) {
                                 Toast.makeText(Register.this, e.getMessage(), Toast.LENGTH_LONG).show();
                             }
                         }

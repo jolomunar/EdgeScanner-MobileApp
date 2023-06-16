@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
@@ -21,6 +22,9 @@ public class PrivacyPolicy extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_privacy_policy);
 
+        SharedPreferences preferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        PromoData.userRole = preferences.getString("UserRole", "");
+
         privPol = findViewById(R.id.privacy);
         accept = findViewById(R.id.accept);
 
@@ -31,6 +35,7 @@ public class PrivacyPolicy extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(PrivacyPolicy.this, Login.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
             }
         });

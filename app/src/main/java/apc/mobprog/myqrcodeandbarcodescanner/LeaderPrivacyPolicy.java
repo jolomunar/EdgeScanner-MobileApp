@@ -2,6 +2,7 @@ package apc.mobprog.myqrcodeandbarcodescanner;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
@@ -21,6 +22,9 @@ public class LeaderPrivacyPolicy extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_privacy_policy);
 
+        SharedPreferences preferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        PromoData.userRole = preferences.getString("UserRole", "");
+
         privPol = findViewById(R.id.privacy);
         accept = findViewById(R.id.accept);
 
@@ -31,6 +35,7 @@ public class LeaderPrivacyPolicy extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(LeaderPrivacyPolicy.this, Login.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
             }
         });

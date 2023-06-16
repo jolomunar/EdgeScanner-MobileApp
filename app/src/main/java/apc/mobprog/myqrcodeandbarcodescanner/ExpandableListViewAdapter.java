@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
-
 import java.util.HashMap;
 import java.util.List;
 
@@ -104,5 +103,9 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         String barcode = bcList.get(pos);
         infoList.put(barcode, strings);
         notifyDataSetChanged();
+    }
+
+    public boolean hasChildData(int pos) {
+        return infoList.containsKey(pos);
     }
 }
