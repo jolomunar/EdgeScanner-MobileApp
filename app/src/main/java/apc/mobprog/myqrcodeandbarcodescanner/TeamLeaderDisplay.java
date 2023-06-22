@@ -89,10 +89,6 @@ public class TeamLeaderDisplay extends AppCompatActivity {
         listView.setAdapter(newAdapter);
         dataStorage = findViewById(R.id.button7);
 
-        int count = newAdapter.getGroupCount();
-        String labelText = "Data Storage: " + count;
-        dataStorage.setText(labelText);
-
         openList();
 
         Toast.makeText(TeamLeaderDisplay.this, GlobalBarcode.barcode, Toast.LENGTH_SHORT).show();
