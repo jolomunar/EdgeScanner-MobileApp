@@ -41,7 +41,7 @@ import java.util.Map;
 public class DisplayActivity extends AppCompatActivity {
 
     private static final String TAG = "";
-    private static final int REQUEST_CODE_DATA_STORAGE = 1;
+    private int dataCounter;
     Button dataStorage;
     ExpandableListView listView;
     ExpandableListViewAdapter newAdapter;
@@ -105,7 +105,17 @@ public class DisplayActivity extends AppCompatActivity {
         shoeBrand.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         brand.setAdapter(shoeBrand);
 
+        if (DataStorage.dsa != null) {
+            updateButtonLabel();
+        }
+
     }
+    private void updateButtonLabel() {
+        dataCounter = DataStorage.dsa.getGroupCount();
+        String buttonText = "Data Storage: " + dataCounter;
+        dataStorage.setText(buttonText);
+    }
+
 
     public void openList() {
 
@@ -286,6 +296,6 @@ public class DisplayActivity extends AppCompatActivity {
 
             Log.i(TAG, "Wrong Intent" + intent);
         }
-    }
 
+    }
 }

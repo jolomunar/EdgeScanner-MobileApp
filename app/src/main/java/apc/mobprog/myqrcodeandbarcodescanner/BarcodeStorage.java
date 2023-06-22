@@ -22,4 +22,8 @@ public class BarcodeStorage {
     public void addList(JSONObject jo) {
         this.ja.put(jo);
     }
+
+    public void clearList() {
+        ja = new JSONArray();
+    }
 }

@@ -35,10 +35,11 @@ import java.util.List;
 public class DataStorage extends AppCompatActivity {
 
     private static final String TAG = "";
+    private JSONArray jsonArray;
     Button send;
     Button scanAgain;
     ExpandableListView ds;
-    StorageAdapter dsa;
+    static StorageAdapter dsa;
     List<String> bcnm;
 
     HashMap<String, JSONObject> bcin1;
@@ -220,8 +221,7 @@ public class DataStorage extends AppCompatActivity {
 
                         if (ds.getAdapter() != null) {
                             Toast.makeText(DataStorage.this, "Successfully inserted the data", Toast.LENGTH_SHORT).show();
-                            bcnm.clear();
-                            bcin.clear();
+                            barcodeStorage.clearList();
                             ds.setAdapter((BaseExpandableListAdapter)null);
                             pD.dismiss();
                         } else if (!isNetworkAvailable()) {
@@ -261,6 +261,9 @@ public class DataStorage extends AppCompatActivity {
             @Override
             public byte[] getBody() throws AuthFailureError {
                 // Build the JSON object for the request body
+
+                barcodeStorage.clearList();
+
                 JSONArray itemsArray = new JSONArray();
                 try {
                     JSONArray ja = barcodeStorage.getList();
