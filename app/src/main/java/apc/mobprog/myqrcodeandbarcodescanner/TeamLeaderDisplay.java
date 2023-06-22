@@ -87,6 +87,11 @@ public class TeamLeaderDisplay extends AppCompatActivity {
 
         newAdapter = new ExpandableListViewAdapter(this, GlobalBarcode.arrayList, info_barcodes);
         listView.setAdapter(newAdapter);
+        dataStorage = findViewById(R.id.button7);
+
+        int count = newAdapter.getGroupCount();
+        String labelText = "Data Storage: " + count;
+        dataStorage.setText(labelText);
 
         openList();
 
@@ -288,8 +293,11 @@ public class TeamLeaderDisplay extends AppCompatActivity {
             }
 
             Intent intent = new Intent(TeamLeaderDisplay.this, DataStorageTL.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+            finish();
+
+            Log.i(TAG, "Intent Error" + intent);
         }
     }
 

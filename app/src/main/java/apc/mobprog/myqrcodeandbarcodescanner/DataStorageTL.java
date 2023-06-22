@@ -1,9 +1,7 @@
 package apc.mobprog.myqrcodeandbarcodescanner;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -12,11 +10,12 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -24,7 +23,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -96,7 +94,7 @@ public class DataStorageTL extends AppCompatActivity {
 
 
         JSONArray ja = barcodeStorage.getList();
-        for (int i = 0 ; i < ja.length(); i++) {
+        for (int i = 0; i < ja.length(); i++) {
             JSONObject jo = null;
             try {
                 jo = ja.getJSONObject(i);
@@ -162,14 +160,15 @@ public class DataStorageTL extends AppCompatActivity {
     }
 
     public void reScan() {
+        bcnm.clear();
+        bcin.clear();
 
-        Intent intent = getIntent();
+        Intent intent = new Intent(this, DataStorage.class);
         IntentIntegrator intentIntegrator = new IntentIntegrator(this);
         intentIntegrator.setOrientationLocked(true);
         intentIntegrator.setDesiredBarcodeFormats(intentIntegrator.ALL_CODE_TYPES);
         intentIntegrator.setCaptureActivity(CapturePortrait.class);
         intentIntegrator.initiateScan();
-
     }
 
     @Override
@@ -210,12 +209,16 @@ public class DataStorageTL extends AppCompatActivity {
 
             // Start the display activity and pass the scanned barcode
             Intent intent = new Intent(this, TeamLeaderDisplay.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra("barcode_nr", scannedBarcode);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
+            finish();
+
+            Log.d(TAG, "Weird Intent" + intent);
         }
         Log.i(TAG, "Expandable Information" + bcin);
     }
+
     private void sendDataToEndpoint() {
         final ProgressDialog pD = new ProgressDialog(DataStorageTL.this);
         pD.setMessage("Processing Results...");
@@ -228,15 +231,39 @@ public class DataStorageTL extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Log.i(TAG, "Panalo" + response);
-                        Toast.makeText(DataStorageTL.this, "Successfully inserted the data", Toast.LENGTH_SHORT).show();
-                        pD.dismiss();
+
+                        if (ds.getAdapter() != null) {
+                            Toast.makeText(DataStorageTL.this, "Successfully inserted the data", Toast.LENGTH_SHORT).show();
+                            bcnm.clear();
+                            bcin.clear();
+                            ds.setAdapter((BaseExpandableListAdapter)null);
+                            pD.dismiss();
+                        } else if (!isNetworkAvailable()) {
+                            Toast.makeText(DataStorageTL.this, "No internet connection available", Toast.LENGTH_SHORT).show();
+                            return;
+                        } else {
+                            Toast.makeText(DataStorageTL.this, "Failed to send the data", Toast.LENGTH_SHORT).show();
+                        }
+
+                        // Dismiss the progress dialog if it is showing
+                        if (pD != null && pD.isShowing()) {
+                            pD.dismiss();
+                        }
+
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // Handle the error response
-                        Toast.makeText(DataStorageTL.this, "Failed to send the data", Toast.LENGTH_SHORT).show();
+
+                        // Dismiss the progress dialog if it is showing
+                        if (pD != null && pD.isShowing()) {
+                            if(ds.getAdapter() == null) {
+                                Toast.makeText(DataStorageTL.this, "Failed to send the data", Toast.LENGTH_SHORT).show();
+                                pD.dismiss();
+                            }
+                        }
                     }
                 }) {
             @Override
@@ -275,5 +302,12 @@ public class DataStorageTL extends AppCompatActivity {
         };
         requestQueue.add(stringRequest);
     }
-
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+        }
+        return false;
+    }
 }

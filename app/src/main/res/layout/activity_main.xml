@@ -19,9 +19,9 @@
 
     <TextView
         android:id="@+id/textview2"
-        android:layout_width="332dp"
-        android:layout_height="37dp"
-        android:text="Welcome to Edge Scanner!"
+        android:layout_width="337dp"
+        android:layout_height="69dp"
+        android:text="Welcome to Edge Sales Connect!"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"

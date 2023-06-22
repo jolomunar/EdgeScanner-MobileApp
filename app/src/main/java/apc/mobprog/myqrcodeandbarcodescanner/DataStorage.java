@@ -1,6 +1,5 @@
 package apc.mobprog.myqrcodeandbarcodescanner;
 
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
@@ -10,6 +9,10 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
@@ -75,7 +78,6 @@ public class DataStorage extends AppCompatActivity {
         bcnm = new ArrayList<>();
         bcin = new HashMap<>();
         bcin1 = new HashMap<>();
-
 
         JSONArray ja = barcodeStorage.getList();
         for (int i = 0 ; i < ja.length(); i++) {
@@ -144,13 +146,15 @@ public class DataStorage extends AppCompatActivity {
     }
 
     public void reScan() {
+        bcnm.clear();
+        bcin.clear();
 
-        Intent intent = getIntent();
-        IntentIntegrator intentIntegrator = new IntentIntegrator(this);
-        intentIntegrator.setOrientationLocked(true);
-        intentIntegrator.setDesiredBarcodeFormats(intentIntegrator.ALL_CODE_TYPES);
-        intentIntegrator.setCaptureActivity(CapturePortrait.class);
-        intentIntegrator.initiateScan();
+            Intent intent = new Intent(this, DataStorage.class);
+            IntentIntegrator intentIntegrator = new IntentIntegrator(this);
+            intentIntegrator.setOrientationLocked(true);
+            intentIntegrator.setDesiredBarcodeFormats(intentIntegrator.ALL_CODE_TYPES);
+            intentIntegrator.setCaptureActivity(CapturePortrait.class);
+            intentIntegrator.initiateScan();
 
     }
 
@@ -192,8 +196,12 @@ public class DataStorage extends AppCompatActivity {
 
             // Start the display activity and pass the scanned barcode
             Intent intent = new Intent(this, DisplayActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra("barcode_nr", scannedBarcode);
             startActivity(intent);
+            finish();
+
+
         }
         Log.i(TAG, "Expandable Information" + bcin);
     }
@@ -209,15 +217,39 @@ public class DataStorage extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Log.i(TAG, "Panalo" + response);
-                        Toast.makeText(DataStorage.this, "Successfully inserted the data", Toast.LENGTH_SHORT).show();
-                        pD.dismiss();
+
+                        if (ds.getAdapter() != null) {
+                            Toast.makeText(DataStorage.this, "Successfully inserted the data", Toast.LENGTH_SHORT).show();
+                            bcnm.clear();
+                            bcin.clear();
+                            ds.setAdapter((BaseExpandableListAdapter)null);
+                            pD.dismiss();
+                        } else if (!isNetworkAvailable()) {
+                            Toast.makeText(DataStorage.this, "No internet connection available", Toast.LENGTH_SHORT).show();
+                            return;
+                        } else {
+                            Toast.makeText(DataStorage.this, "Failed to send the data", Toast.LENGTH_SHORT).show();
+                        }
+
+                        // Dismiss the progress dialog if it is showing
+                        if (pD != null && pD.isShowing()) {
+                            pD.dismiss();
+                        }
+
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // Handle the error response
-                        Toast.makeText(DataStorage.this, "Failed to send the data", Toast.LENGTH_SHORT).show();
+
+                        // Dismiss the progress dialog if it is showing
+                        if (pD != null && pD.isShowing()) {
+                            if(ds.getAdapter() == null) {
+                                Toast.makeText(DataStorage.this, "Failed to send the data", Toast.LENGTH_SHORT).show();
+                                pD.dismiss();
+                            }
+                        }
                     }
                 }) {
             @Override
@@ -255,5 +287,14 @@ public class DataStorage extends AppCompatActivity {
             }
         };
         requestQueue.add(stringRequest);
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+        }
+        return false;
     }
 }

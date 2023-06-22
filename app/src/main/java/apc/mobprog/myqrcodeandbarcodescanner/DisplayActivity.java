@@ -23,6 +23,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,6 +41,7 @@ import java.util.Map;
 public class DisplayActivity extends AppCompatActivity {
 
     private static final String TAG = "";
+    private static final int REQUEST_CODE_DATA_STORAGE = 1;
     Button dataStorage;
     ExpandableListView listView;
     ExpandableListViewAdapter newAdapter;
@@ -82,6 +85,7 @@ public class DisplayActivity extends AppCompatActivity {
         GlobalBarcode.barcode = intent.getStringExtra("barcode_nr");
 
         listView = findViewById(R.id.sampleExpandableListView);
+        dataStorage = findViewById(R.id.button7);
 
         newAdapter = new ExpandableListViewAdapter(this, GlobalBarcode.arrayList, info_barcodes);
         listView.setAdapter(newAdapter);
@@ -277,8 +281,10 @@ public class DisplayActivity extends AppCompatActivity {
             }
 
             Intent intent = new Intent(DisplayActivity.this, DataStorage.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
+            finish();
+
+            Log.i(TAG, "Wrong Intent" + intent);
         }
     }
 
