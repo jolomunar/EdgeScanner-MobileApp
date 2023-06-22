@@ -300,4 +300,12 @@ public class DataStorage extends AppCompatActivity {
         }
         return false;
     }
+    @Override
+    public void onBackPressed() {
+        // Clear the data from the array or perform any other cleanup tasks
+        barcodeStorage.clearList();
+
+        // Call the super implementation to allow the default back button behavior
+        super.onBackPressed();
+    }
 }
