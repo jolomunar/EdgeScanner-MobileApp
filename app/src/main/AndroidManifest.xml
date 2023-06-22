@@ -30,7 +30,8 @@
         </activity>
         <activity
             android:name=".DataStorageTL"
-            android:exported="false">
+            android:exported="false"
+            android:launchMode="standard">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value=""/>

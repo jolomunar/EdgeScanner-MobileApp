@@ -8,11 +8,20 @@
 
     <ExpandableListView
         android:id="@+id/imList"
-        android:layout_width="370dp"
-        android:layout_height="686dp"
+        android:layout_width="368dp"
+        android:layout_height="615dp"
+        android:layout_marginTop="64dp"
         android:layoutDirection="rtl"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <SearchView
+        android:id="@+id/search"
+        android:layout_width="373dp"
+        android:layout_height="58dp"
+        app:layout_constraintBottom_toTopOf="@+id/imList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

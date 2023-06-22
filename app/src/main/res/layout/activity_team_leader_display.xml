@@ -6,28 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".TeamLeaderDisplay">
 
-    <!--    <Button-->
-    <!--        android:id="@+id/button4"-->
-    <!--        android:layout_width="152dp"-->
-    <!--        android:layout_height="60dp"-->
-    <!--        android:layout_marginTop="548dp"-->
-    <!--        android:text="Send Data"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintHorizontal_bias="0.907"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-    <!--    <Button-->
-    <!--        android:id="@+id/button2"-->
-    <!--        android:layout_width="155dp"-->
-    <!--        android:layout_height="60dp"-->
-    <!--        android:layout_marginTop="548dp"-->
-    <!--        android:text="Scan Again"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintHorizontal_bias="0.093"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
-
     <Button
         android:id="@+id/button7"
         android:layout_width="152dp"
@@ -45,7 +23,6 @@
         android:layout_height="197dp"
         android:layout_marginTop="16dp"
         android:layoutDirection="rtl"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.458"
         app:layout_constraintStart_toStartOf="parent"
@@ -114,7 +91,6 @@
         android:layout_height="72dp"
         android:layout_marginTop="20dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/button4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
