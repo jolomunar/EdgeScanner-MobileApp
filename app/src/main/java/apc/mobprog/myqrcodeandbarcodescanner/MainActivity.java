@@ -34,6 +34,11 @@ public class MainActivity extends AppCompatActivity {
 
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+            PromoData.firstname = getIntent().getStringExtra("firstname");
+            PromoData.lastname = getIntent().getStringExtra("lastname");
+            PromoData.locationCode = getIntent().getStringExtra("locationcode");
+
+
             auth = FirebaseAuth.getInstance();
             verifyMsg = findViewById(R.id.verifyEmailMsg);
 
@@ -73,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, DisplayActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_SINGLE_TOP);
             intent.putExtra("barcode_nr", intentResult.getContents());
+            intent.putExtra("firstname", PromoData.firstname);
+            intent.putExtra("lastname", PromoData.lastname);
+            intent.putExtra("locationcode", PromoData.locationCode);
             startActivity(intent);
         }
     }

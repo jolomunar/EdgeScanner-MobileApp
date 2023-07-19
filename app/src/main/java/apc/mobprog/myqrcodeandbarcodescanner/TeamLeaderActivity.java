@@ -37,6 +37,10 @@ public class TeamLeaderActivity extends AppCompatActivity {
 
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        PromoData.firstname = getIntent().getStringExtra("firstname");
+        PromoData.lastname = getIntent().getStringExtra("lastname");
+        PromoData.locationCode = getIntent().getStringExtra("locationcode");
+
         auth = FirebaseAuth.getInstance();
         verifyMsg = findViewById(R.id.verifyEmailMsg);
 
@@ -75,6 +79,9 @@ public class TeamLeaderActivity extends AppCompatActivity {
         IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         Intent intent = new Intent(this, TeamLeaderDisplay.class);
         intent.putExtra("barcode_nr", intentResult.getContents());
+        intent.putExtra("firstname", PromoData.firstname);
+        intent.putExtra("lastname", PromoData.lastname);
+        intent.putExtra("locationcode", PromoData.locationCode);
         startActivity(intent);
     }
 }

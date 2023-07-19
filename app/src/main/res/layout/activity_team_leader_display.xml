@@ -87,15 +87,14 @@
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="346dp"
+        android:layout_width="339dp"
         android:layout_height="72dp"
         android:layout_marginTop="20dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sampleExpandableListView"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/sampleExpandableListView">
 
         <TextView
             android:id="@+id/promoInfo"
@@ -113,7 +112,7 @@
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="176dp"
+            android:layout_width="317dp"
             android:layout_height="20dp"
             android:text="TextView"
             android:textSize="16sp"
@@ -126,8 +125,8 @@
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="176dp"
-            android:layout_height="wrap_content"
+            android:layout_width="318dp"
+            android:layout_height="20dp"
             android:layout_marginBottom="8dp"
             android:text="TextView"
             android:textSize="16sp"

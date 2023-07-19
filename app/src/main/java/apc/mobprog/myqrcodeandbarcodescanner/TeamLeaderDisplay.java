@@ -40,7 +40,8 @@ public class TeamLeaderDisplay extends AppCompatActivity {
 
     private static final String TAG = "";
     Button dataStorage;
-    ExpandableListView listView;
+    @SuppressLint("StaticFieldLeak")
+    static ExpandableListView listView;
     ExpandableListViewAdapter newAdapter;
     EditText unitPrice, tQuantity, remarks;
     Spinner brand;
@@ -50,6 +51,7 @@ public class TeamLeaderDisplay extends AppCompatActivity {
 
     TextView textView2;
     TextView textView;
+//    TextView textView3;
     TextView masterList;
 
     FirebaseDatabase node;
@@ -78,10 +80,15 @@ public class TeamLeaderDisplay extends AppCompatActivity {
 
         textView2 = findViewById(R.id.textView2);
         textView = findViewById(R.id.textView);
+//        textView3 = findViewById(R.id.textView3);
 
 
         Intent intent = getIntent();
         GlobalBarcode.barcode = intent.getStringExtra("barcode_nr");
+
+        PromoData.firstname = intent.getStringExtra("firstname");
+        PromoData.lastname = intent.getStringExtra("lastname");
+        PromoData.locationCode = intent.getStringExtra("locationcode");
 
         listView = findViewById(R.id.sampleExpandableListView);
 
@@ -105,6 +112,7 @@ public class TeamLeaderDisplay extends AppCompatActivity {
         brand.setAdapter(shoeBrand);
 
     }
+
 
     public void openList() {
 
@@ -136,26 +144,45 @@ public class TeamLeaderDisplay extends AppCompatActivity {
     }
 
     public void getFirstName() {
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        ref = FirebaseDatabase.getInstance().getReference("registration-data")
-                .child("user").child(userId);
-        ref.addValueEventListener(new ValueEventListener() {
+        String userURL = "https://edgescanner.herokuapp.com/api/getFirstname?firstname=" + PromoData.firstname;
+        Log.d(TAG, "expected" + userURL);
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, userURL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String userResponse) {
+                        Log.i(TAG, "Talo: " + userResponse);
+                        try {
+                            JSONObject jo = new JSONObject(userResponse);
+                            PromoData.firstname = jo.getString("firstname");
+                            PromoData.lastname = jo.getString("lastname");
+                            PromoData.locationCode = jo.getString("location_code");
+
+                            textView2.setText(PromoData.firstname + PromoData.lastname);
+                            textView.setText(PromoData.locationCode);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                PromoData.firstname = dataSnapshot.child("firstname").getValue(String.class);
-                PromoData.lastname = dataSnapshot.child("lastname").getValue(String.class);
-                PromoData.locationCode = dataSnapshot.child("outlet").getValue(String.class);
-
-                textView2.setText(PromoData.firstname+ " " + PromoData.lastname);
-                textView.setText(PromoData.locationCode);
-
+            public void onErrorResponse(VolleyError error) {
+                // Handle error
+                Log.e(TAG, "onErrorResponse: Request failed: " + error.getMessage());
             }
 
+        }) {
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json");
+                return headers;
             }
-        });
+        };
+
+        queue.add(stringRequest);
     }
 
     public void getItemInfo() {
@@ -265,7 +292,13 @@ public class TeamLeaderDisplay extends AppCompatActivity {
         } else if (TextUtils.isEmpty(GlobalBarcode.totalQuantity)) {
             tQuantity.setError("This Field is Required");
             return;
-        } else {
+        } else if (GlobalBarcode.size == null) {
+            Toast.makeText(TeamLeaderDisplay.this, "Invalid Input. Please Scan Again", Toast.LENGTH_LONG).show();
+        } else if (GlobalBarcode.color == null) {
+            Toast.makeText(TeamLeaderDisplay.this, "Invalid Input. Please Scan Again", Toast.LENGTH_LONG).show();
+        } else if (GlobalBarcode.stCode == null) {
+            Toast.makeText(TeamLeaderDisplay.this, "Invalid Input. Please Scan Again", Toast.LENGTH_LONG).show();
+        }  else {
             try {
                 JSONObject jo = new JSONObject();
 
@@ -289,7 +322,6 @@ public class TeamLeaderDisplay extends AppCompatActivity {
             }
 
             Intent intent = new Intent(TeamLeaderDisplay.this, DataStorageTL.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
 

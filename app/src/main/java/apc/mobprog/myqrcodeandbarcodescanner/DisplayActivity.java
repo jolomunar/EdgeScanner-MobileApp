@@ -41,7 +41,6 @@ import java.util.Map;
 public class DisplayActivity extends AppCompatActivity {
 
     private static final String TAG = "";
-    private int dataCounter;
     Button dataStorage;
     ExpandableListView listView;
     ExpandableListViewAdapter newAdapter;
@@ -84,6 +83,10 @@ public class DisplayActivity extends AppCompatActivity {
         Intent intent = getIntent();
         GlobalBarcode.barcode = intent.getStringExtra("barcode_nr");
 
+        PromoData.firstname = intent.getStringExtra("firstname");
+        PromoData.lastname = intent.getStringExtra("lastname");
+        PromoData.locationCode = intent.getStringExtra("locationcode");
+
         listView = findViewById(R.id.sampleExpandableListView);
         dataStorage = findViewById(R.id.button7);
 
@@ -92,7 +95,10 @@ public class DisplayActivity extends AppCompatActivity {
 
         openList();
 
-        Toast.makeText(DisplayActivity.this, GlobalBarcode.barcode, Toast.LENGTH_SHORT).show();
+//        userInformation();
+
+        Toast.makeText(DisplayActivity.this, "Scanned Barcode: " + GlobalBarcode.barcode, Toast.LENGTH_SHORT).show();
+
         beginOnClick();
 
         unitPrice = findViewById(R.id.unitprice);
@@ -105,17 +111,7 @@ public class DisplayActivity extends AppCompatActivity {
         shoeBrand.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         brand.setAdapter(shoeBrand);
 
-        if (DataStorage.dsa != null) {
-            updateButtonLabel();
-        }
-
     }
-    private void updateButtonLabel() {
-        dataCounter = DataStorage.dsa.getGroupCount();
-        String buttonText = "Data Storage: " + dataCounter;
-        dataStorage.setText(buttonText);
-    }
-
 
     public void openList() {
 
@@ -147,26 +143,45 @@ public class DisplayActivity extends AppCompatActivity {
     }
 
     public void getFirstName() {
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        ref = FirebaseDatabase.getInstance().getReference("registration-data")
-                .child("user").child(userId);
-        ref.addValueEventListener(new ValueEventListener() {
+        String userURL = "https://edgescanner.herokuapp.com/api/getFirstname?firstname=" + PromoData.firstname;
+        Log.d(TAG, "expected" + userURL);
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, userURL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String userResponse) {
+                        Log.i(TAG, "Talo: " + userResponse);
+                        try {
+                            JSONObject jo = new JSONObject(userResponse);
+                            PromoData.firstname = jo.getString("firstname");
+                            PromoData.lastname = jo.getString("lastname");
+                            PromoData.locationCode = jo.getString("location_code");
+
+                            textView2.setText(PromoData.firstname + " " + PromoData.lastname);
+                            textView.setText(PromoData.locationCode);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                PromoData.firstname = dataSnapshot.child("firstname").getValue(String.class);
-                PromoData.lastname = dataSnapshot.child("lastname").getValue(String.class);
-                PromoData.locationCode = dataSnapshot.child("outlet").getValue(String.class);
-
-                textView2.setText(PromoData.firstname + " " + PromoData.lastname);
-                textView.setText(PromoData.locationCode);
-
+            public void onErrorResponse(VolleyError error) {
+                // Handle error
+                Log.e(TAG, "onErrorResponse: Request failed: " + error.getMessage());
             }
 
+        }) {
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json");
+                return headers;
             }
-        });
+        };
+
+        queue.add(stringRequest);
     }
 
     public void getItemInfo() {
@@ -267,6 +282,12 @@ public class DisplayActivity extends AppCompatActivity {
         } else if (TextUtils.isEmpty(GlobalBarcode.totalQuantity)) {
             tQuantity.setError("This Field is Required");
             return;
+        } else if (GlobalBarcode.size == null) {
+            Toast.makeText(DisplayActivity.this, "Invalid Input. Please Scan Again", Toast.LENGTH_LONG).show();
+        } else if (GlobalBarcode.color == null) {
+            Toast.makeText(DisplayActivity.this, "Invalid Input. Please Scan Again", Toast.LENGTH_LONG).show();
+        } else if (GlobalBarcode.stCode == null) {
+            Toast.makeText(DisplayActivity.this, "Invalid Input. Please Scan Again", Toast.LENGTH_LONG).show();
         } else {
             try {
                 JSONObject jo = new JSONObject();
@@ -291,6 +312,7 @@ public class DisplayActivity extends AppCompatActivity {
             }
 
             Intent intent = new Intent(DisplayActivity.this, DataStorage.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
             startActivity(intent);
             finish();
 

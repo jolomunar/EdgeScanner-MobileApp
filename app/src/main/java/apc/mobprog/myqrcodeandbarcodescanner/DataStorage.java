@@ -2,6 +2,8 @@ package apc.mobprog.myqrcodeandbarcodescanner;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,6 +17,7 @@ import android.net.NetworkInfo;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -35,12 +38,15 @@ import java.util.List;
 public class DataStorage extends AppCompatActivity {
 
     private static final String TAG = "";
-    private JSONArray jsonArray;
     Button send;
     Button scanAgain;
-    ExpandableListView ds;
+    @SuppressLint("StaticFieldLeak")
+    static ExpandableListView ds;
+    @SuppressLint("StaticFieldLeak")
     static StorageAdapter dsa;
     List<String> bcnm;
+
+    private TextView dataCountTextView;
 
     HashMap<String, JSONObject> bcin1;
     private HashMap<String, List<String>> bcin = new HashMap<>();
@@ -69,6 +75,7 @@ public class DataStorage extends AppCompatActivity {
 
         ds = findViewById(R.id.dataStorageView);
 
+        dataCountTextView = findViewById(R.id.dataCountTextView);
 
         beginOnClick();
 
@@ -120,7 +127,18 @@ public class DataStorage extends AppCompatActivity {
         dsa = new StorageAdapter(this, bcnm, bcin);
         ds.setAdapter(dsa);
 
+        // Notify the adapter of the data change
+        dsa.notifyDataSetChanged();
+
+        // Update the data count
+        updateDataCount();
+
         Log.i(TAG, "Barcode Information:" + bcin);
+    }
+
+    private void updateDataCount() {
+        int itemCount = bcin.size();
+        dataCountTextView.setText("Data to be Sent: " + itemCount);
     }
 
 
@@ -150,13 +168,12 @@ public class DataStorage extends AppCompatActivity {
         bcnm.clear();
         bcin.clear();
 
-            Intent intent = new Intent(this, DataStorage.class);
-            IntentIntegrator intentIntegrator = new IntentIntegrator(this);
-            intentIntegrator.setOrientationLocked(true);
-            intentIntegrator.setDesiredBarcodeFormats(intentIntegrator.ALL_CODE_TYPES);
-            intentIntegrator.setCaptureActivity(CapturePortrait.class);
-            intentIntegrator.initiateScan();
-
+        Intent intent = new Intent(this, DataStorage.class);
+        IntentIntegrator intentIntegrator = new IntentIntegrator(this);
+        intentIntegrator.setOrientationLocked(true);
+        intentIntegrator.setDesiredBarcodeFormats(intentIntegrator.ALL_CODE_TYPES);
+        intentIntegrator.setCaptureActivity(CapturePortrait.class);
+        intentIntegrator.initiateScan();
     }
 
     @Override
@@ -197,7 +214,6 @@ public class DataStorage extends AppCompatActivity {
 
             // Start the display activity and pass the scanned barcode
             Intent intent = new Intent(this, DisplayActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra("barcode_nr", scannedBarcode);
             startActivity(intent);
             finish();
@@ -224,6 +240,8 @@ public class DataStorage extends AppCompatActivity {
                             barcodeStorage.clearList();
                             ds.setAdapter((BaseExpandableListAdapter)null);
                             pD.dismiss();
+
+                            dataCountTextView.setText("Data to be Sent: 0");
                         } else if (!isNetworkAvailable()) {
                             Toast.makeText(DataStorage.this, "No internet connection available", Toast.LENGTH_SHORT).show();
                             return;
@@ -261,8 +279,6 @@ public class DataStorage extends AppCompatActivity {
             @Override
             public byte[] getBody() throws AuthFailureError {
                 // Build the JSON object for the request body
-
-                barcodeStorage.clearList();
 
                 JSONArray itemsArray = new JSONArray();
                 try {

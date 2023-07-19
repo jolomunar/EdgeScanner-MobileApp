@@ -76,6 +76,21 @@
                 app:layout_constraintVertical_bias="0.29"
                 tools:ignore="SpeakableTextPresentCheck" />
 
+            <EditText
+                android:id="@+id/username"
+                android:layout_width="333dp"
+                android:layout_height="60dp"
+                android:ems="10"
+                android:hint="Username"
+                android:inputType="textPersonName"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.441"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.29"
+                tools:ignore="SpeakableTextPresentCheck" />
+
             <Spinner
                 android:id="@+id/locationCode"
                 android:layout_width="333dp"

@@ -26,6 +26,12 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -37,16 +43,17 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Register extends AppCompatActivity {
 
-    EditText firstname, lastname, email, password, mobNum;
+    EditText firstname, lastname, email, password, userNewName;
     Spinner locationCode, roleSpinner;
-    String first, sur, emailAdd, passwd, locCode, uRole;
+    String first, sur, emailAdd, passwd, locCode, uRole, uName;
     Button register;
 
-    FirebaseDatabase node = FirebaseDatabase.getInstance();
-    DatabaseReference ref;
-
+    RequestQueue requestQueue;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -56,11 +63,13 @@ public class Register extends AppCompatActivity {
 
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        requestQueue = Volley.newRequestQueue(this);
 
         firstname = findViewById(R.id.firstname);
         lastname = findViewById(R.id.lastname);
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
+        userNewName = findViewById(R.id.username);
         locationCode = findViewById(R.id.locationCode);
         roleSpinner = findViewById(R.id.role);
 
@@ -79,9 +88,8 @@ public class Register extends AppCompatActivity {
         roleSpinner.setAdapter(userRole);
 
         beginOnClick();
-
-
     }
+
     public void beginOnClick() {
         register = findViewById(R.id.button6);
         register.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +99,7 @@ public class Register extends AppCompatActivity {
                 sur = lastname.getText().toString();
                 emailAdd = email.getText().toString();
                 passwd = password.getText().toString();
+                uName = userNewName.getText().toString();
                 locCode = locationCode.getSelectedItem().toString();
                 uRole = roleSpinner.getSelectedItem().toString();
 
@@ -99,6 +108,9 @@ public class Register extends AppCompatActivity {
                     return;
                 } else if (TextUtils.isEmpty(sur)) {
                     lastname.setError("Please enter Last Name");
+                    return;
+                } else if (TextUtils.isEmpty(uName)) {
+                    userNewName.setError("Please enter username");
                     return;
                 } else if (uRole.equals("Select Role")) {
                     Toast.makeText(Register.this, "Please select a role", Toast.LENGTH_SHORT).show();
@@ -117,57 +129,80 @@ public class Register extends AppCompatActivity {
                     return;
                 }
 
-                registerAccount(first, sur, emailAdd, passwd, locCode, uRole);
+                registerAccount(first, sur, emailAdd, passwd, locCode, uRole, uName);
             }
         });
     }
 
-    private void registerAccount(String first, String sur, String emailAdd, String passwd, String locCode, String role) {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        auth.createUserWithEmailAndPassword(emailAdd, passwd).addOnCompleteListener(Register.this,
-                new OnCompleteListener<AuthResult>() {
+    private void registerAccount(String first, String sur, String emailAdd, String passwd, String locCode, String role, String username) {
+        // Create a JSON object with the user registration data
+        HashMap<String, String> userData = new HashMap<>();
+        userData.put("firstname", first);
+        userData.put("lastname", sur);
+        userData.put("email", emailAdd);
+        userData.put("password", passwd);
+        userData.put("location_code", locCode);
+        userData.put("UserRole", role);
+        userData.put("username", username);
+
+        JSONObject jsonBody = new JSONObject(userData);
+
+        // Set the content type of the request
+        String contentType = "application/json";
+
+        // Create the Volley request
+        String url = "https://edgescanner.herokuapp.com/api/register";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+                    public void onResponse(JSONObject response) {
+                        // Account registered successfully
 
-                        if (task.isSuccessful()) {
-                            // Account registered successfully
-                            Toast.makeText(Register.this, "Account Registered", Toast.LENGTH_LONG).show();
-                            FirebaseUser user = auth.getCurrentUser();
-                            String userId = user.getUid();
-                            ref = node.getReference("registration-data").child("user");
-
-                            Intent intent;
-                            if (role.equals("Team Leader")) {
-                                // Redirect to Team Leader activities
-                                intent = new Intent(Register.this, LeaderPrivacyPolicy.class);
-                            } else {
-                                // Redirect to regular user activities
-                                intent = new Intent(Register.this, PrivacyPolicy.class);
-                            }
-                            intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                            startActivity(intent);
-                            finish();
-
-                            HashMap<String, String> promoMap = new HashMap<>();
-                            promoMap.put("firstname", first);
-                            promoMap.put("lastname", sur);
-                            promoMap.put("email", emailAdd);
-                            promoMap.put("password", passwd);
-                            promoMap.put("outlet", locCode);
-                            promoMap.put("userRole", role);
-
-                            ref.child(userId).setValue(promoMap);
-                        } else {
-                            try {
-                                throw task.getException();
-                            } catch (FirebaseAuthUserCollisionException e) {
-                                email.setError("Email already exists");
-                                email.requestFocus();
-                            } catch (Exception e) {
-                                Toast.makeText(Register.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                            }
+                        try {
+                            JSONObject responseData = response.getJSONObject("data");
+                            String firstName = responseData.getString("firstname");
+                            String lastName = responseData.getString("lastname");
+                            String locationCode = responseData.getString("location_code");
+                            // Store the retrieved user information in shared preferences or any other storage mechanism as needed
+                            SharedPreferences preferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putString("FirstName", firstName);
+                            editor.putString("LastName", lastName);
+                            editor.putString("LocationCode", locationCode);
+                            editor.apply();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
+
+                        Intent intent;
+                        if (role.equals("Team Leader")) {
+                            // Redirect to Team Leader activities
+                            intent = new Intent(Register.this, LeaderPrivacyPolicy.class);
+                        } else {
+                            // Redirect to regular user activities
+                            intent = new Intent(Register.this, PrivacyPolicy.class);
+                        }
+
+                        Toast.makeText(Register.this, "Account Registered", Toast.LENGTH_LONG).show();
+                        intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        startActivity(intent);
+                        finish();
                     }
-                });
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Account registration failed
+                        Toast.makeText(Register.this, "Account registration failed", Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            public String getBodyContentType() {
+                return contentType;
+            }
+        };
+
+        // Add the request to the request queue
+        requestQueue.add(request);
     }
 }

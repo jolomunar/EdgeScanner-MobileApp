@@ -2,6 +2,8 @@ package apc.mobprog.myqrcodeandbarcodescanner;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +17,7 @@ import android.net.NetworkInfo;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -49,9 +52,13 @@ public class DataStorageTL extends AppCompatActivity {
     private static final String TAG = "";
     Button send;
     Button scanAgain;
-    ExpandableListView ds;
-    StorageAdapter dsa;
+    @SuppressLint("StaticFieldLeak")
+    static ExpandableListView ds;
+    @SuppressLint("StaticFieldLeak")
+    static StorageAdapter dsa;
     List<String> bcnm;
+
+    private TextView dataCountTextView;
 
     HashMap<String, JSONObject> bcin1;
     private HashMap<String, List<String>> bcin = new HashMap<>();
@@ -67,6 +74,7 @@ public class DataStorageTL extends AppCompatActivity {
     BarcodeStorage barcodeStorage = BarcodeStorage.getInstance();
 
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +89,7 @@ public class DataStorageTL extends AppCompatActivity {
 
         ds = findViewById(R.id.dataStorageView);
 
+        dataCountTextView = findViewById(R.id.dataCountTextView);
 
         beginOnClick();
 
@@ -133,9 +142,19 @@ public class DataStorageTL extends AppCompatActivity {
         dsa = new StorageAdapter(this, bcnm, bcin);
         ds.setAdapter(dsa);
 
+        // Notify the adapter of the data change
+        dsa.notifyDataSetChanged();
+
+        // Update the data count
+        updateDataCount();
+
         Log.i(TAG, "Barcode Information:" + bcin);
     }
 
+    private void updateDataCount() {
+        int itemCount = bcin.size();
+        dataCountTextView.setText("Data to be Sent: " + itemCount);
+    }
 
     private void beginOnClick() {
         scanAgain = findViewById(R.id.button8);
@@ -209,7 +228,6 @@ public class DataStorageTL extends AppCompatActivity {
 
             // Start the display activity and pass the scanned barcode
             Intent intent = new Intent(this, TeamLeaderDisplay.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra("barcode_nr", scannedBarcode);
             startActivity(intent);
             finish();
@@ -237,6 +255,8 @@ public class DataStorageTL extends AppCompatActivity {
                             barcodeStorage.clearList();
                             ds.setAdapter((BaseExpandableListAdapter)null);
                             pD.dismiss();
+
+                            dataCountTextView.setText("Data to be Sent: 0");
                         } else if (!isNetworkAvailable()) {
                             Toast.makeText(DataStorageTL.this, "No internet connection available", Toast.LENGTH_SHORT).show();
                             return;
@@ -274,8 +294,6 @@ public class DataStorageTL extends AppCompatActivity {
             @Override
             public byte[] getBody() throws AuthFailureError {
                 // Build the JSON object for the request body
-
-                barcodeStorage.clearList();
 
                 JSONArray itemsArray = new JSONArray();
                 try {

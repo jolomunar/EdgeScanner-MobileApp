@@ -11,11 +11,22 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import java.net.HttpURLConnection;
+import java.util.HashMap;
+import java.util.Map;
+
 import android.text.TextUtils;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.android.volley.AuthFailureError;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -30,6 +41,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class Login extends AppCompatActivity {
@@ -49,8 +63,8 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
-        mAuth = FirebaseAuth.getInstance();
+        SharedPreferences preferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        PromoData.userRole = preferences.getString("UserRole", "");
 
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
@@ -106,77 +120,95 @@ public class Login extends AppCompatActivity {
     }
 
     private void signInUser(String emailAdd, String passwd) {
-        mAuth.signInWithEmailAndPassword(emailAdd, passwd).addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    FirebaseUser newUser = mAuth.getCurrentUser();
-                    String userUid = newUser.getUid();
+        String url = "https://edgescanner.herokuapp.com/api/login"; // Replace with your API endpoint
 
-                    PromoData.email = email.getText().toString().trim();
-                    PromoData.password = password.getText().toString().trim();
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        JSONObject requestData = new JSONObject();
+        try {
+            requestData.put("email", emailAdd);
+            requestData.put("password", passwd);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-                    DatabaseReference ref = node.getReference("registration-data").child("user").child(userUid);
-                    ref.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()) {
-                                email.setError(null);
-                                String regPass = dataSnapshot.child("password").getValue(String.class);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, requestData,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Handle the successful response from the API
 
-                                if (regPass != null && regPass.equals(PromoData.password)) {
-                                    email.setError(null);
+                        try {
+                            String token = response.getString("token");
 
-                                    PromoData.firstname = dataSnapshot.child("firstname").getValue(String.class);
-                                    PromoData.lastname = dataSnapshot.child("lastname").getValue(String.class);
-                                    PromoData.locationCode = dataSnapshot.child("outlet").getValue(String.class);
-                                    PromoData.userRole = dataSnapshot.child("userRole").getValue(String.class);
-                                }
-                            }
+                            if(!token.isEmpty()) {
 
-                            // Check user role and perform redirection
-                            if (PromoData.userRole != null) {
+                                JSONObject userData = response.getJSONObject("user");
+                                String firstName = userData.getString("firstname");
+                                String lastName = userData.getString("lastname");
+                                String locationCode = userData.getString("location_code");
+
+                                // Store the retrieved user information in shared preferences or any other storage mechanism as needed
+                                SharedPreferences preferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = preferences.edit();
+                                editor.putString("FirstName", firstName);
+                                editor.putString("LastName", lastName);
+                                editor.putString("LocationCode", locationCode);
+                                editor.apply();
+
                                 if (PromoData.userRole.equals("Team Leader")) {
                                     Intent intent = new Intent(Login.this, TeamLeaderActivity.class);
+
+                                    intent.putExtra("firstname", firstName);
+                                    intent.putExtra("lastname", lastName);
+                                    intent.putExtra("locationcode", locationCode);
+
                                     startActivity(intent);
                                     finish();
                                 } else if (PromoData.userRole.equals("Promo Merchandiser")) {
                                     Intent intent = new Intent(Login.this, MainActivity.class);
+
+                                    intent.putExtra("firstname", firstName);
+                                    intent.putExtra("lastname", lastName);
+                                    intent.putExtra("locationcode", locationCode);
+
                                     startActivity(intent);
                                     finish();
-                                } else {
-                                    Toast.makeText(Login.this, "Unknown user role", Toast.LENGTH_SHORT).show();
                                 }
-                            } else {
-                                Toast.makeText(Login.this, "User role not defined", Toast.LENGTH_SHORT).show();
+
+                                Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_SHORT).show();
+
+                                Log.e(TAG, "5555 - Login Error" + response);
+
+                                Log.i(TAG, "User Data: " + userData);
+                                Log.i(TAG, "First Name: " + firstName);
+
                             }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-
-                    Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                } else {
-                    try {
-                        throw task.getException();
-                    } catch (FirebaseAuthInvalidUserException e) {
-                        email.setError("User Invalid or Non-existent");
-                        email.requestFocus();
-                    } catch (FirebaseAuthInvalidCredentialsException e) {
-                        password.setError("Incorrect Password");
-                        password.requestFocus();
-                    } catch (Exception e) {
-                        Log.e(TAG, e.getMessage());
-                        Toast.makeText(Login.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (error instanceof AuthFailureError) {
+                            // Incorrect password
+                            password.setError("Incorrect Password");
+                        } else {
+                            // Other error occurred
+                            Toast.makeText(Login.this, "Login failed. Please try again.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }) {
+            @Override
+            public String getBodyContentType() {
+                // Specify that the request body is in JSON format
+                return "application/json";
             }
-        });
+        };
+
+        requestQueue.add(jsonObjectRequest);
     }
-
-
 
 }
